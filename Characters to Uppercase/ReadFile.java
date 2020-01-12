@@ -10,11 +10,11 @@ public class ReadFile extends BufferedReader {
 	public int read() throws IOException {
 		int uppercase = super.read();
 
-        if (97 <= uppercase && uppercase <= 122) {
-            uppercase -= 32;
-        }
+		if (97 <= uppercase && uppercase <= 122) {
+		    uppercase -= 32;
+		}
 
-        return uppercase;
+		return uppercase;
 	}
 	
 	public static void main(String[] args) throws Exception {
@@ -28,6 +28,6 @@ public class ReadFile extends BufferedReader {
 		}
 		
 		readFile.close();
-        fileReader.close();
+        	fileReader.close();
 	}
 }
