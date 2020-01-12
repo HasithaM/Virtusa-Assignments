@@ -10,18 +10,18 @@ public class ReadFile extends BufferedReader {
 	public int read() throws IOException {
 		CharValue charValue = new CharValue(super.read());
 
-        return toUpperCase(charValue);
+        	return toUpperCase(charValue);
 	}
 	
 	private int toUpperCase(CharValue charValue) {
-        int uppercase = charValue.getCharValue();
+		int uppercase = charValue.getCharValue();
 
-        if (97 <= uppercase && uppercase <= 122) {
-            uppercase -= 32;
-        }
+		if (97 <= uppercase && uppercase <= 122) {
+		    uppercase -= 32;
+		}
 
-        return uppercase;
-    }
+		return uppercase;
+    	}
 	
 	public static void main(String[] args) throws Exception {
 		FileReader fileReader = new FileReader("SampleText.txt");
@@ -34,6 +34,6 @@ public class ReadFile extends BufferedReader {
 		}
 		
 		readFile.close();
-        fileReader.close();
+        	fileReader.close();
 	}
 }
