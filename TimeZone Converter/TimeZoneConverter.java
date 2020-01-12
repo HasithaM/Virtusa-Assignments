@@ -4,11 +4,11 @@ import java.util.Scanner;
 public class TimeZoneConverter {
 	
 	public static void main(String[] args) {
-		    int year, month, date, hour, minutes, seconds;
+		int year, month, date, hour, minutes, seconds;
 
         Scanner scanner = new Scanner(System.in);
 		
-		    System.out.print("Enter Year : ");
+		System.out.print("Enter Year : ");
         year = scanner.nextInt();
 
         System.out.print("Enter Month : ");
@@ -28,7 +28,7 @@ public class TimeZoneConverter {
 
         System.out.println();
 		
-		    LocalDateTime localDateTime = LocalDateTime.of(year, Month.of(month), date, hour, minutes, seconds);
+		LocalDateTime localDateTime = LocalDateTime.of(year, Month.of(month), date, hour, minutes, seconds);
 
         ZoneId kolkataZoneId = ZoneId.of("Asia/Kolkata");
         ZonedDateTime asiaZonedDateTime = localDateTime.atZone(kolkataZoneId);
