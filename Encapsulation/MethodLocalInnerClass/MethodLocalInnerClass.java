@@ -15,6 +15,6 @@ class MethodLocalInnerClass {
 	
 	public static void main(String[] args) {
 		MethodLocalInnerClass methodLocalInnerClass = new MethodLocalInnerClass();
-        methodLocalInnerClass.outerMethod();
+        	methodLocalInnerClass.outerMethod();
 	}
 }
