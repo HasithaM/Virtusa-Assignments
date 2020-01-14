@@ -7,11 +7,11 @@ public class FileReaderClass {
 		
 		BufferedReader bufferedReader = new BufferedReader(fileReader);
         
-    String line;
+	    	String line;
 
-    while ((line = bufferedReader.readLine()) != null) {
-        System.out.println(line);
-    }
+	    	while ((line = bufferedReader.readLine()) != null) {
+			System.out.println(line);
+	    	}
 		
 		bufferedReader.close();
 		fileReader.close();
