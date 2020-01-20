@@ -21,7 +21,7 @@ public class Application {
                 .keySet()
                 .stream()
                 .filter(student -> Application.getAllStudents().get(student) > 60)
-				.sorted()
+		.sorted()
                 .collect(Collectors.toList());
 
         System.out.println(studentList);
