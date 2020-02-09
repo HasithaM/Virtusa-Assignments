@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Employee {
-	
+
 	private int id;
 	private String name;
 	private String location;
-	
+
 	public Employee() {
-		
+
 	}
 
 	public Employee(int id, String name, String location) {
@@ -42,16 +42,31 @@ public class Employee {
 	public void setLocation(String location) {
 		this.location = location;
 	}
-	
+
 	public static List<Employee> getAllEmployees() {
 		List<Employee> employeeList = new ArrayList<>();
-		
+
 		employeeList.add(new Employee(1, "Hasitha", "Kiribathgoda"));
 		employeeList.add(new Employee(2, "Ruzaik", "Kurunegala"));
 		employeeList.add(new Employee(3, "Razmeen", "Kandy"));
 		employeeList.add(new Employee(4, "Alfar", "Dehiwala"));
 		employeeList.add(new Employee(5, "Ishan", "Colombo"));
-		
+
 		return employeeList;
+	}
+
+	public static Employee getEmployeeByID(int id) {
+		Employee employee = null;
+
+		for (Employee employeeList : getAllEmployees()) {
+			if (id == employeeList.getId())
+				employee = employeeList;
+		}
+		
+		return employee;
+		
+		/*return "Employee ID : " + employee.getId() + 
+				"\nEmployee Name : " + employee.getName() + 
+				"\nEmployee Address : " + employee.getLocation();*/
 	}
 }
