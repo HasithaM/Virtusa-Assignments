@@ -16,6 +16,7 @@ import { AppRoutingModule } from './app-routing.module';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import { LogoutComponent } from './logout/logout.component';
+import { PaymentComponent } from './payment/payment.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { LogoutComponent } from './logout/logout.component';
     BookingComponent,
     HeaderComponent,
     FooterComponent,
-    LogoutComponent
+    LogoutComponent,
+    PaymentComponent
   ],
   imports: [
     BrowserModule,

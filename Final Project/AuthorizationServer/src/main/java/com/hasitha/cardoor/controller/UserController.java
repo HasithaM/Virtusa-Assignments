@@ -20,7 +20,7 @@ public class UserController {
 
     @GetMapping(value = "/user")
     public UserDetails getUser() {
-        System.err.println("callohk");
+        System.err.println("Calling...");
         return userDetailsService.loadUserByUsername("hasitha");
     }
 }

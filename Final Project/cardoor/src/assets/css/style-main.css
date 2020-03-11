@@ -372,8 +372,8 @@ a.slicknav_btn {
 
 .book-a-car {
   background-color: rgba(255, 255, 255, 0.8);
-  margin-top: 118px;
-  padding: 30px 50px;
+  margin-top: 0px;
+  padding: 20px 0px;
 }
 
 .book-a-car select.custom-select {
@@ -383,11 +383,18 @@ a.slicknav_btn {
 }
 
 .book-item {
-  margin-bottom: 30px;
+  margin-bottom: 0px;
 }
 
 .return-car {
   margin-top: 30px;
+}
+
+.book-a-car h3 {
+  font-size: 15px;
+  font-weight: 350;
+  margin-bottom: 15px;
+  text-transform: uppercase;
 }
 
 .book-a-car h4 {

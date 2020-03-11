@@ -10,16 +10,18 @@ import { NotfoundComponent } from './notfound/notfound.component';
 import { RouterModule, Routes } from '@angular/router';
 import {LogoutComponent} from './logout/logout.component';
 import {CardoorAuthGuardService} from './service/cardoor-auth-guard.service';
+import {PaymentComponent} from './payment/payment.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full'},
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'cars', component: CarsComponent, canActivate:[CardoorAuthGuardService]},
-  { path: 'booking', component: BookingComponent, canActivate: [CardoorAuthGuardService] },
+  { path: 'cars', component: CarsComponent, canActivate: [CardoorAuthGuardService]},
+  { path: 'booking', component: BookingComponent, canActivate: [CardoorAuthGuardService]},
   { path: 'about', component: AboutComponent },
   { path: 'contact', component: ContactComponent },
   {path: 'logout', component: LogoutComponent, canActivate: [CardoorAuthGuardService]},
+  {path: 'payment', component: PaymentComponent, canActivate: [CardoorAuthGuardService]},
   { path: '**', component: NotfoundComponent }
 ];
 

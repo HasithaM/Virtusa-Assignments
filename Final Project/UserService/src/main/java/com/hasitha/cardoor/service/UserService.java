@@ -11,7 +11,8 @@ import java.util.Map;
 public interface UserService {
 
     List<User> getAllUsers();
-    List<User> getUserByEmail(String email);
+    List<User> getAllUsersByEmail(String email);
+    User getUserByUsername(String username);
     ResponseEntity<User> getUserById(Integer userId) throws ResourceNotFoundException;
 
     User createUser(User user);

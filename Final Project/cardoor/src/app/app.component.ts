@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -8,9 +9,17 @@ import {Component, OnInit} from '@angular/core';
 export class AppComponent implements OnInit {
   title = 'cardoor';
 
-  constructor() {
+  constructor(private router: Router) {
   }
 
   ngOnInit(): void {
+  }
+
+  isPaymentWindow() {
+    if (this.router.url === '/payment') {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

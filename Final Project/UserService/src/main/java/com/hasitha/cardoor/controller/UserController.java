@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/user")
 @CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
@@ -25,8 +25,8 @@ public class UserController {
     }
 
     @GetMapping(value = "/user/email/{email}")
-    public List<User> getUserByEmail(@PathVariable String email) {
-        return userService.getUserByEmail(email);
+    public List<User> getAllUsersByEmail(@PathVariable String email) {
+        return userService.getAllUsersByEmail(email);
     }
 
     @GetMapping(value = "/user/id/{userId}")
