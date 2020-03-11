@@ -1,0 +1,74 @@
+<!--== Page Title Area Start ==-->
+<section id="page-title-area" class="section-padding overlay">
+  <div class="container">
+    <div class="row">
+      <!-- Page Title Start -->
+      <div class="col-lg-12">
+        <div class="section-title  text-center">
+          <h2>Register</h2>
+          <span class="title-line"><i class="fa fa-car"></i></span>
+          <p>Welcome New Customer... Join with Us to Enjoy Cardoor...</p>
+        </div>
+      </div>
+      <!-- Page Title End -->
+    </div>
+  </div>
+</section>
+<!--== Page Title Area End ==-->
+
+<!--== Login Page Content Start ==-->
+<section id="lgoin-page-wrap" class="section-padding">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-5 col-md-8 m-auto">
+        <div class="login-page-content">
+          <div class="login-form">
+            <h3>Sign Up</h3>
+            <form>
+              <div class="name">
+                <div class="row">
+                  <div class="col-md-6">
+                    <input type="text" [(ngModel)]="user.firstName" name="firstname" id="firstname" placeholder="First Name">
+                  </div>
+                  <div class="col-md-6">
+                    <input type="text" [(ngModel)]="user.lastName" name="lastname" id="lastname" placeholder="Last Name">
+                  </div>
+                </div>
+              </div>
+              <div class="username">
+                <input type="email" [(ngModel)]="user.emailAddress" name="emailAddress" id="emailAddress" placeholder="Email">
+              </div>
+              <div class="username">
+                <input type="text" [(ngModel)]="user.username" name="username" id="username" placeholder="Username">
+              </div>
+              <div class="password">
+                <input type="password" [(ngModel)]="user.password" name="password" id="password" placeholder="Password">
+              </div>
+              <div class="phoneNumber">
+                <input type="phoneNumber" [(ngModel)]="user.phoneNumber" name="phoneNumber" id="phoneNumber" placeholder="Phone Number">
+              </div>
+              <div class="log-btn">
+                <button type="submit" (click)="createUser();"><i class="fa fa-check-square"></i> Sign Up</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="login-other">
+            <span class="or">or</span>
+            <a href="#" class="login-with-btn facebook"><i class="fa fa-facebook"></i> Signup With Facebook</a>
+            <a href="#" class="login-with-btn google"><i class="fa fa-google"></i> Signup With Google</a>
+          </div>
+          <div class="create-ac">
+            <p>Have an account? <a routerLink="/login" (click)="reloadLogin();">Sign In</a></p>
+          </div>
+          <div class="login-menu">
+            <a routerLink="/about" (click)="reloadAbout();">About</a>
+            <span>|</span>
+            <a routerLink="/contact" (click)="reloadContact();">Contact</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--== Login Page Content End ==-->
