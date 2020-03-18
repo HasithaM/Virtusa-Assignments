@@ -68,8 +68,10 @@ public class User implements Serializable {
     @Column(name = "accountNonLocked")
     private boolean accountNonLocked;
 
+    @Transient
     private Booking[] bookings;
 
+    @Transient
     private Payment[] payments;
 
     public User() {

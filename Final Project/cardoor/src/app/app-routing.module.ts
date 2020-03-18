@@ -16,12 +16,13 @@ const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full'},
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'cars', component: CarsComponent, canActivate: [CardoorAuthGuardService]},
-  { path: 'booking', component: BookingComponent, canActivate: [CardoorAuthGuardService]},
+  { path: 'cars', component: CarsComponent, canActivate: [CardoorAuthGuardService] },
+  { path: 'booking', component: BookingComponent, canActivate: [CardoorAuthGuardService] },
   { path: 'about', component: AboutComponent },
   { path: 'contact', component: ContactComponent },
-  {path: 'logout', component: LogoutComponent, canActivate: [CardoorAuthGuardService]},
-  {path: 'payment', component: PaymentComponent, canActivate: [CardoorAuthGuardService]},
+  { path: 'logout', component: LogoutComponent, canActivate: [CardoorAuthGuardService] },
+  { path: 'payment', component: PaymentComponent, canActivate: [CardoorAuthGuardService] },
+  // { path: 'admin', component: DashboardComponent },
   { path: '**', component: NotfoundComponent }
 ];
 

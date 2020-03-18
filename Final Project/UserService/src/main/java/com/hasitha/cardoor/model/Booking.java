@@ -14,7 +14,7 @@ public class Booking {
     private Timestamp fromDate;
     private Timestamp toDate;
     private Timestamp dateBooked;
-    private String status; //b - booked, c - cancelled, x - done
+    private String status; // b - booked, c - cancelled, x - done
 
     public Booking() {
     }

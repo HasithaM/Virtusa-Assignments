@@ -49,7 +49,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
                 .allowedMethods("*")
                 .maxAge(3600L)
                 .allowedHeaders("*")
-                .exposedHeaders("*")
+                .exposedHeaders("Authorization")
                 .allowCredentials(true);
     }
 }

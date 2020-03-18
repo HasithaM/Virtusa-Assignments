@@ -1,5 +1,6 @@
 package com.hasitha.cardoor.config;
 
+import com.hasitha.cardoor.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,8 @@ import javax.sql.DataSource;
 @Configuration
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
     /*@Autowired
     private PasswordEncoder passwordEncoder;*/
 
@@ -54,5 +57,6 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.tokenStore(jdbcTokenStore());
         endpoints.authenticationManager(authenticationManager);
+        endpoints.userDetailsService(userDetailsService);
     }
 }

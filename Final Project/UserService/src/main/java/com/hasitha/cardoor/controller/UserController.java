@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -24,33 +23,33 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @GetMapping(value = "/user/email/{email}")
-    public List<User> getAllUsersByEmail(@PathVariable String email) {
-        return userService.getAllUsersByEmail(email);
-    }
-
     @GetMapping(value = "/user/id/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable Integer userId) throws ResourceNotFoundException {
-        return userService.getUserById(userId);
+        return userService.findUserById(userId);
     }
 
     @PostMapping(value = "/user")
-    public User createUser(@RequestBody User user) {
+    public APIResponse createUser(@RequestBody User user) {
         return userService.createUser(user);
     }
 
-    @PutMapping(value = "/user/{userId}")
-    public ResponseEntity<User> updateUser(@PathVariable Integer userId, @RequestBody User user) {
-        return userService.updateUser(userId, user);
+    @PutMapping(value = "/user/{username}")
+    public APIResponse updateUser(@PathVariable String username, @RequestBody User user) {
+        return userService.updateUser(username, user);
     }
 
-    @DeleteMapping(value = "/user/{userId}")
-    public Map<String, Boolean> deleteUser(@PathVariable Integer userId) throws ResourceNotFoundException {
-        return userService.deleteUser(userId);
+    @DeleteMapping(value = "/user/{username}")
+    public APIResponse deleteUser(@PathVariable String username) throws ResourceNotFoundException {
+        return userService.deleteUser(username);
     }
 
     @GetMapping(value = "/login/{username}/{password}")
     public APIResponse userLogin(@PathVariable String username, @PathVariable String password) throws ResourceNotFoundException {
         return userService.userLogin(username, password);
+    }
+
+    @GetMapping(value = "/checktoken/{username}/{accessToken}/{refreshToken}")
+    public APIResponse checkAccessToken(@PathVariable String username, @PathVariable String accessToken, @PathVariable String refreshToken) {
+        return userService.checkAccessToken(username, accessToken, refreshToken);
     }
 }

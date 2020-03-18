@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {User} from './cardoor-register.service';
+import {HttpClient} from '@angular/common/http';
 
 export class APIResponse {
   constructor(public status: number,
               public message: string,
+              public parameter: string,
               public accessTokens: AccessTokens) {
   }
 }
@@ -28,10 +28,6 @@ export class CardoorLoginService {
 
   public authenticate(username, password) {
     return this.httpClient.get<APIResponse>('http://localhost:8595/user/login/' + username + '/' + password);
-
-    /*return this.httpClient.get<any>('http://localhost:7585/car/test', {
-      headers: new HttpHeaders({'Authorization': 'bearer fc9136e2-c053-42db-a683-149ad52e0397', 'Access-Control-Allow-Origin': 'http://localhost:4200'})
-    });*/
   }
 
   public isUserLoggedIn() {

@@ -13,4 +13,4 @@ spring:
       ddl-auto: update
 authserver:
   clientid: cardoor
-  clintsecret: cardoor
+  clientsecret: cardoor
