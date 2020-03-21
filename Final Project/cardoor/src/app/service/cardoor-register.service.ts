@@ -1,16 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {APIResponse} from './cardoor-login.service';
-
-export class User {
-  constructor(public firstName: string,
-              public lastName: string,
-              public username: string,
-              public password: string,
-              public emailAddress: string,
-              public phoneNumber: string) {
-  }
-}
+import {Urlconfiguration} from '../appconfig/urlconfiguration';
+import {User} from '../model/user';
+import {APIResponse} from '../model/apiresponse';
 
 @Injectable({
   providedIn: 'root'
@@ -21,11 +13,11 @@ export class CardoorRegisterService {
   }
 
   public createUser(user) {
-    return this.httpClient.post<APIResponse>('http://localhost:8595/user/user', user);
+    return this.httpClient.post<APIResponse>(Urlconfiguration.URL_REGISTER_USER, user);
   }
 
   public getUserByEmail(user) {
-    return this.httpClient.get<User>('http://localhost:8595/user/email/' + user.emailAddress);
+    return this.httpClient.get<User>(Urlconfiguration.URL_GET_USER + user.emailAddress);
   }
 
   /*public updateUser(user) {

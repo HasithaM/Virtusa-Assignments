@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {APIResponse, CardoorLoginService} from '../service/cardoor-login.service';
+import {CardoorLoginService} from '../service/cardoor-login.service';
 import {Router} from '@angular/router';
 import swal from 'sweetalert';
 import {isUndefined} from 'util';
+import {APIResponse} from '../model/apiresponse';
+import {Approuter} from '../appconfig/approuter';
 
 @Component({
   selector: 'app-login',
@@ -16,68 +18,66 @@ export class LoginComponent implements OnInit {
   invalidLogin = false;
   apiResponse: APIResponse;
 
-  constructor(private router: Router, private cardoorLoginService: CardoorLoginService) {
+  constructor(private router: Router,
+              private cardoorLoginService: CardoorLoginService) {
   }
 
   ngOnInit(): void {
   }
 
-  reloadAbout() {
-    window.location.href = 'http://' + window.location.hostname + ':' + window.location.port + '/about';
+  public reloadAbout() {
+    Approuter.reloadAbout();
   }
 
-  reloadContact() {
-    window.location.href = 'http://' + window.location.hostname + ':' + window.location.port + '/contact';
+  public reloadContact() {
+    Approuter.reloadContact();
   }
 
-  reloadRegister() {
-    window.location.href = 'http://' + window.location.hostname + ':' + window.location.port + '/register';
+  public reloadRegister() {
+    Approuter.reloadRegister();
   }
 
-  goToUserHome() {
-    window.location.href = 'http://' + window.location.hostname + ':' + window.location.port;
-  }
-
-  goToAdminHome() {
-    window.location.href = 'http://' + window.location.hostname + ':' + window.location.port + '/admin';
-  }
-
-  loginUser(): void {
-    console.log(this.username);
+  public loginUser(): void {
+    console.log('Token: ' + localStorage.getItem('accessToken'));
     if (this.username !== null && !isUndefined(this.username) && this.password !== null && !isUndefined(this.password)) {
-      this.cardoorLoginService.authenticate(this.username, this.password).subscribe(data => {
-        this.apiResponse = data;
+      this.cardoorLoginService.authenticate(this.username, this.password)
+        .subscribe(data => {
+          console.log('Login: ' + JSON.stringify(data));
 
-        if (data.message === 'Username or Password is Wrong!') {
+          this.apiResponse = data;
+
+          if (this.apiResponse.message === 'Username or Password is Wrong!') {
+            swal({
+              title: 'Oops!',
+              text: 'Username or Password is Wrong!',
+              icon: 'error'
+            });
+          } else if (this.apiResponse.message === 'Successful!') {
+            this.cardoorLoginService.setUserData(
+              this.username,
+              this.apiResponse.parameter,
+              this.apiResponse.accessTokens.access_token,
+              this.apiResponse.accessTokens.refresh_token);
+
+            this.invalidLogin = false;
+            /* this.router.navigate(['']); */
+
+            if (this.apiResponse.parameter === 'U') {
+              Approuter.reloadHome();
+            } else if (this.apiResponse.parameter === 'A') {
+              Approuter.reloadAdmin();
+            }
+          }
+        }, error => {
+          console.log(error);
+          this.invalidLogin = true;
+
           swal({
             title: 'Oops!',
             text: 'Username or Password is Wrong!',
             icon: 'error'
           });
-        } else if (data.message === 'Successful!') {
-          sessionStorage.setItem('username', this.username);
-          sessionStorage.setItem('accessToken', this.apiResponse.accessTokens.access_token);
-          sessionStorage.setItem('refreshToken', this.apiResponse.accessTokens.refresh_token);
-
-          this.invalidLogin = false;
-          /* this.router.navigate(['']); */
-
-          if (data.parameter === 'U') {
-            this.goToUserHome();
-          } else if (data.parameter === 'A') {
-            this.goToAdminHome();
-          }
-        }
-      }, error => {
-        console.log(error);
-        this.invalidLogin = true;
-
-        swal({
-          title: 'Oops!',
-          text: 'Username or Password is Wrong!',
-          icon: 'error'
         });
-      });
     } else {
       swal({
         title: 'Oops!',

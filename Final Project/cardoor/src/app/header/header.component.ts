@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CardoorLoginService} from '../service/cardoor-login.service';
+import {Approuter} from '../appconfig/approuter';
 
 @Component({
   selector: 'app-header',
@@ -8,28 +9,29 @@ import {CardoorLoginService} from '../service/cardoor-login.service';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(public cardoorLoginService: CardoorLoginService) { }
+  constructor(public cardoorLoginService: CardoorLoginService) {
+  }
 
   ngOnInit(): void {
   }
 
-  reloadHome() {
-    window.location.href = 'http://' + window.location.hostname + ':' + window.location.port;
+  public reloadHome() {
+    Approuter.reloadHome();
   }
 
-  reloadAbout() {
-    window.location.href = 'http://' + window.location.hostname + ':' + window.location.port + '/about';
+  public reloadAbout() {
+    Approuter.reloadAbout();
   }
 
-  reloadBooking() {
-    window.location.href = 'http://' + window.location.hostname + ':' + window.location.port + '/booking';
+  public reloadContact() {
+    Approuter.reloadContact();
   }
 
-  reloadContact() {
-    window.location.href = 'http://' + window.location.hostname + ':' + window.location.port + '/contact';
+  public reloadLogin() {
+    Approuter.reloadLogin();
   }
 
-  reloadLogin() {
-    window.location.href = 'http://' + window.location.hostname + ':' + window.location.port + '/login';
+  public reloadAdmin() {
+    Approuter.reloadAdmin();
   }
 }

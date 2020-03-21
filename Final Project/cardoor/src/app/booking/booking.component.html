@@ -104,24 +104,25 @@
       <!-- Car List Content Start -->
       <div class="col-lg-8">
         <div class="car-details-content">
-          <h2>Aston Martin One-77 <span class="price">Rent: <b>$150</b></span></h2>
+          <h2>{{ car.carBrandName + ' ' + car.carModel.modelName }}<span
+            class="price">Rent: <b>Rs. {{ car.pricePerHour }}.00</b></span></h2>
           <div class="car-preview-crousel">
             <div class="single-car-preview">
-              <img src="assets/img/car/car-5.jpg" alt="JSOFT">
+              <img src="{{ 'data:image/jpeg;base64,' + car.carImages.imageOne }}" alt="JSOFT">
             </div>
             <div class="single-car-preview">
-              <img src="assets/img/car/car-1.jpg" alt="JSOFT">
+              <img src="{{ 'data:image/jpeg;base64,' + car.carImages.imageTwo }}" alt="JSOFT">
             </div>
             <div class="single-car-preview">
-              <img src="assets/img/car/car-6.jpg" alt="JSOFT">
+              <img src="{{ 'data:image/jpeg;base64,' + car.carImages.imageThree }}" alt="JSOFT">
             </div>
           </div>
           <div class="car-details-info">
             <h4>Additional Info</h4>
-            <p>The Aventador LPER 720-4 50° ise a limited (200 units – 100 Coupe and 100 Roadster) versione of thed
+            <!--<p>The Aventador LPER 720-4 50° ise a limited (200 units – 100 Coupe and 100 Roadster) versione of thed
               Aventadored LP 700-4 commemorating the 50th anniversary of Lamborghini. It included ised increased engine
               power to 720 PS (530 kW; 710 bhp) via a new specific engine calibration, enlarged and extended front air
-              intakes and the aerodynamic splitter.</p>
+              intakes and the aerodynamic splitter.</p>-->
 
             <div class="technical-info">
               <div class="row">
@@ -129,20 +130,24 @@
                   <div class="tech-info-table">
                     <table class="table table-bordered">
                       <tr>
-                        <th>Class</th>
-                        <td>Compact</td>
-                      </tr>
-                      <tr>
-                        <th>Fuel</th>
-                        <td>Petrol</td>
+                        <th>No of Passengers</th>
+                        <td>{{ car.noOfPassengers }}</td>
                       </tr>
                       <tr>
                         <th>Doors</th>
-                        <td>5</td>
+                        <td>{{ car.doorsCount }}</td>
+                      </tr>
+                      <tr>
+                        <th>Fuel</th>
+                        <td>{{ car.fuelType }}</td>
                       </tr>
                       <tr>
                         <th>GearBox</th>
-                        <td>Automatic</td>
+                        <td>{{ car.gearType }}</td>
+                      </tr>
+                      <tr>
+                        <th>AC / Non AC</th>
+                        <td>{{ car.acNonAc ? 'AC' : 'Non AC' }}</td>
                       </tr>
                     </table>
                   </div>
@@ -151,15 +156,12 @@
                 <div class="col-lg-6">
                   <div class="tech-info-list">
                     <ul>
-                      <li>ABS</li>
                       <li>Air Bags</li>
-                      <li>Bluetooth</li>
-                      <li>Car Kit</li>
-                      <li>GPS</li>
-                      <li>Music</li>
-                      <li>Bluetooth</li>
                       <li>ABS</li>
                       <li>GPS</li>
+                      <li>Bluetooth</li>
+                      <li>Music</li>
+                      <li>Car Kit</li>
                     </ul>
                   </div>
                 </div>
@@ -188,12 +190,13 @@
                         <!--== Pick Up Location ==-->
                         <div class="pickup-location book-item">
                           <h3>PICK-UP LOCATION:</h3>
-                          <select class="custom-select">
-                            <option selected>Select</option>
-                            <option value="1">Dhaka</option>
-                            <option value="2">Comilla</option>
-                            <option value="3">Barishal</option>
-                            <option value="3">Rangpur</option>
+                          <select class="custom-select" [(ngModel)]="this.pickUpLocation" name="pickUpLocation">
+                            <option selected>Pickup Location</option>
+                            <option value="Colombo">Colombo</option>
+                            <option value="Kandy">Kandy</option>
+                            <option value="Galle">Galle</option>
+                            <option value="Polonnaruwa">Polonnaruwa</option>
+                            <option value="Jaffna">Jaffna</option>
                           </select>
                         </div>
                         <!--== Pick Up Location ==-->
@@ -209,9 +212,7 @@
                         <!--== Pick Up Date ==-->
                         <div class="pick-up-date book-item">
                           <h3>PICK-UP DATE:</h3>
-                          <input id="startDate" placeholder="Pick Up Date"/>
-
-
+                          <input id="startDate" [(ngModel)]="this.pickUpDate" name="pickUpDate" (ngModelChange)="calculateAmount(car.pricePerHour, this.pickUpDate, this.returnDate);" placeholder="Pick Up Date"/>
                         </div>
                         <!--== Pick Up Location ==-->
                       </div>
@@ -222,7 +223,7 @@
                         <div class="pick-up-date book-item">
                           <div class="return-car">
                             <h3>Return DATE:</h3>
-                            <input id="endDate" placeholder="Return Date"/>
+                            <input id="endDate" [(ngModel)]="this.returnDate" name="returnDate" (ngModelChange)="calculateAmount(car.pricePerHour, this.pickUpDate, this.returnDate);" placeholder="Return Date"/>
                           </div>
                         </div>
                       </div>
@@ -232,8 +233,12 @@
                       <div class="book-a-car">
                         <div class="pick-up-date book-item">
                           <div class="return-car">
-                            <h3>Return DATE:</h3>
-                            <input type="text" placeholder="Full Name">
+                            <h3>Paying Amount: {{ this.totalDays? 'For' + this.totalDays + 'Days' : '' }}</h3>
+                            <select class="custom-select" [(ngModel)]="this.payingAmount" name="payingAmount">
+                              <option value="Choose" selected>Choose</option>
+                              <option value="{{ this.totalPayment }}">Full Payment - Rs. {{ this.totalPayment }}.00</option>
+                              <option value="{{ this.totalPayment / 2 }}">Half Payment - Rs. {{ this.totalPayment / 2 }}.00</option>
+                            </select>
                           </div>
                         </div>
                       </div>
@@ -242,7 +247,7 @@
 
 
                   <div class="input-submit">
-                    <button type="submit">Go To Book</button>
+                    <button type="submit" (click)="completePayment(car.id, this.pickUpLocation, this.pickUpDate, this.returnDate, this.payingAmount);">Go To Book</button>
                   </div>
                 </form>
               </div>

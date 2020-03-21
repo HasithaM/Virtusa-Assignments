@@ -1,25 +1,22 @@
-import { Injectable } from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
-import {Observable} from 'rxjs';
+import {Injectable} from '@angular/core';
+import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
 import {CardoorLoginService} from './cardoor-login.service';
+import {Approuter} from '../appconfig/approuter';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CardoorAuthGuardService implements CanActivate {
 
-  constructor(private router: Router, private cardoorLoginService: CardoorLoginService) { }
+  constructor(private router: Router, private cardoorLoginService: CardoorLoginService) {
+  }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     if (this.cardoorLoginService.isUserLoggedIn()) {
       return true;
     } else {
-      this.goToLogin();
+      Approuter.reloadLogin();
       return false;
     }
-  }
-
-  goToLogin() {
-    window.location.href = 'http://' + window.location.hostname + ':' + window.location.port + '/login';
   }
 }

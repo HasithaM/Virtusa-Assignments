@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {CardoorLoginService} from '../service/cardoor-login.service';
+import {Approuter} from '../appconfig/approuter';
 
 @Component({
   selector: 'app-logout',
@@ -9,7 +10,8 @@ import {CardoorLoginService} from '../service/cardoor-login.service';
 })
 export class LogoutComponent implements OnInit {
 
-  constructor(private router: Router, private cardoorLoginService: CardoorLoginService) {
+  constructor(private router: Router,
+              private cardoorLoginService: CardoorLoginService) {
   }
 
   ngOnInit(): void {
@@ -18,7 +20,7 @@ export class LogoutComponent implements OnInit {
     this.goToHome();
   }
 
-  goToHome() {
-    window.location.href = 'http://' + window.location.hostname + ':' + window.location.port;
+  public goToHome() {
+    Approuter.reloadHome();
   }
 }

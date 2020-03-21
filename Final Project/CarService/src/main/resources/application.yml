@@ -11,3 +11,14 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
       ddl-auto: update
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+security:
+  oauth2:
+    resource:
+      token-info-uri: http://localhost:9595/oauth/check_token
+    client:
+      client-id: cardoor
+      client-secret: cardoor

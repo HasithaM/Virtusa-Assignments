@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {Approuter} from '../appconfig/approuter';
 
 @Component({
   selector: 'app-notfound',
@@ -12,7 +13,7 @@ export class NotfoundComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  reloadHome() {
-    window.location.href = 'http://' + window.location.hostname + ':' + window.location.port;
+  public reloadHome() {
+    Approuter.reloadHome();
   }
 }

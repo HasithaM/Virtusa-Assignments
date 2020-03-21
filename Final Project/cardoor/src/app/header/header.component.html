@@ -65,9 +65,21 @@
             <ul>
               <li class="active"><a routerLink="" (click)="reloadHome();">Home</a></li>
               <li><a routerLink="/about" (click)="reloadAbout();">About</a></li>
-              <li><a routerLink="/booking" (click)="reloadBooking();">Cars</a></li>
+              <li><a routerLink="/cars" [queryParams]="{brand: 'all'}">Cars</a>
+                <ul>
+                  <li><a routerLink="/cars" [queryParams]="{brand: 'MERCEDES BENZ'}">MERCEDES BENZ</a></li>
+                  <li><a routerLink="/cars" [queryParams]="{brand: 'BMW'}">BMW</a></li>
+                  <li><a routerLink="/cars" [queryParams]="{brand: 'AUDI'}">AUDI</a></li>
+                  <li><a routerLink="/cars" [queryParams]="{brand: 'TOYOTA'}">TOYOTA</a></li>
+                  <li><a routerLink="/cars" [queryParams]="{brand: 'NISSAN'}">NISSAN</a></li>
+                  <li><a routerLink="/cars" [queryParams]="{brand: 'MAZDA'}">MAZDA</a></li>
+                </ul>
+              </li>
               <li><a routerLink="/contact" (click)="reloadContact();">Contact</a></li>
-              <li><a *ngIf="!cardoorLoginService.isUserLoggedIn()" routerLink="/login" (click)="reloadLogin();">Login</a></li>
+              <li><a *ngIf="!cardoorLoginService.isUserLoggedIn()" routerLink="/login"
+                     (click)="reloadLogin();">Login</a></li>
+              <li><a *ngIf="cardoorLoginService.isUserLoggedIn() && cardoorLoginService.isUserAnAdmin()"
+                     routerLink="/admin" (click)="reloadAdmin();">Admin Home</a></li>
               <li><a *ngIf="cardoorLoginService.isUserLoggedIn()" routerLink="/logout">Logout</a></li>
             </ul>
           </nav>

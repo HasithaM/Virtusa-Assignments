@@ -1,0 +1,239 @@
+<div class="wrapper ">
+
+  <!-- Sidebar -->
+  <app-adminsidebar></app-adminsidebar>
+  <!-- End Sidebar -->
+
+  <div class="main-panel">
+
+    <!-- Navbar -->
+    <app-adminnavbar></app-adminnavbar>
+    <!-- End Navbar -->
+
+    <div class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-8">
+            <div class="card">
+              <div class="card-header card-header-danger">
+                <h4 class="card-title">Manage Cars</h4>
+                <p class="card-category">Add, Update or Delete Cars</p>
+              </div>
+              <div class="card-body">
+                <form #carForm="ngForm">
+                  <div class="form-row">
+                    <div class="col-md-6">
+                      <div class="form-group label-floating has-success">
+                        <label class="bmd-label-floating">Brand Name</label>
+                        <select class="form-control" [(ngModel)]="car.carBrandName" name="carBrandNames" (change)="displayBrandDetails();" required>
+                          <option [value]="carBrandName"
+                                  *ngFor="let carBrandName of carBrandNames"> {{carBrandName}} </option>
+                          <!--<option>Choose...</option>
+                          <option>MERCEDES BENZ</option>
+                          <option>BMW</option>
+                          <option>AUDI</option>
+                          <option>TOYOTA</option>
+                          <option>NISSAN</option>
+                          <option>MAZDA</option>-->
+                        </select>
+                        <span class="material-icons form-control-feedback">
+                          done
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group label-floating has-success">
+                        <label class="bmd-label-floating">Car Number</label>
+                        <input type="text" class="form-control" [(ngModel)]="car.carNumber" name="carNumber" required>
+                        <span class="material-icons form-control-feedback">
+                          done
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group label-floating has-success">
+                        <label class="bmd-label-floating">Model Name</label>
+                        <input type="text" class="form-control" [(ngModel)]="carModel.modelName" name="modelName"
+                               required>
+                        <span class="material-icons form-control-feedback">
+                          done
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group label-floating has-success">
+                        <label class="bmd-label-floating">Model Color</label>
+                        <input type="text" class="form-control" [(ngModel)]="carModel.modelColor" name="modelColor"
+                               required>
+                        <span class="material-icons form-control-feedback">
+                          done
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group label-floating has-success">
+                        <label class="bmd-label-floating">Gear Type</label>
+                        <select class="form-control" [(ngModel)]="car.gearType" name="carGearTypes" required>
+                          <option [value]="carGearType"
+                                  *ngFor="let carGearType of carGearTypes"> {{carGearType}} </option>
+                          <!--<option>Choose...</option>
+                          <option>MANUAL</option>
+                          <option>AUTOMATIC</option>-->
+                        </select>
+                        <span class="material-icons form-control-feedback">
+                          done
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group label-floating has-success">
+                        <label class="bmd-label-floating">Fuel Type</label>
+                        <select class="form-control" [(ngModel)]="car.fuelType" name="carFuelTypes" required>
+                          <option [value]="carFuelType"
+                                  *ngFor="let carFuelType of carFuelTypes"> {{carFuelType}} </option>
+                          <!--<option>Choose...</option>
+                          <option>PETROL</option>
+                          <option>DIESEL</option>
+                          <option>HYBRID</option>-->
+                        </select>
+                        <span class="material-icons form-control-feedback">
+                          done
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group label-floating has-success">
+                        <label class="bmd-label-floating">Number of Passengers</label>
+                        <input type="text" class="form-control" [(ngModel)]="car.noOfPassengers" name="noOfPassengers"
+                               required>
+                        <span class="material-icons form-control-feedback">
+                          done
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group label-floating has-success">
+                        <label class="bmd-label-floating">Doors</label>
+                        <input type="text" class="form-control" [(ngModel)]="car.doorsCount" name="doorsCount" required>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group label-floating has-success">
+                        <label class="bmd-label-floating">Mileage per Gallon</label>
+                        <input type="text" class="form-control" [(ngModel)]="car.mileagePerGallon"
+                               name="mileagePerGallon" required>
+                        <span class="material-icons form-control-feedback">
+                          done
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group label-floating has-success">
+                        <label class="bmd-label-floating">AC / Non AC</label>
+                        <select class="form-control" [(ngModel)]="car.acNonAc" name="carFuelTypes" required>
+                          <option value="true">AC</option>
+                          <option value="false">Non AC</option>
+                          <!--<option>Choose...</option>
+                          <option>PETROL</option>
+                          <option>DIESEL</option>
+                          <option>HYBRID</option>-->
+                        </select>
+                        <span class="material-icons form-control-feedback">
+                          done
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group label-floating has-success">
+                        <label class="bmd-label-floating">Bags Can Hold</label>
+                        <input type="text" class="form-control" [(ngModel)]="car.bagsCanHold" name="bagsCanHold"
+                               required>
+                        <span class="material-icons form-control-feedback">
+                          done
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group label-floating has-success">
+                        <label class="bmd-label-floating">Price per Hour</label>
+                        <input type="text" class="form-control" [(ngModel)]="car.pricePerHour" name="pricePerHour"
+                               required>
+                        <span class="material-icons form-control-feedback">
+                          done
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group label-floating has-danger">
+                        <label class="bmd-label-floating">Car Images (Upload 3 Images)</label>
+                        <span class="material-icons form-control-feedback"></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-4 imgUp">
+                      <div class="imagePreview"></div>
+                      <label class="btn btn-dangerPic">Upload
+                        <input type="file" class="uploadFile img" value="Upload Photo"
+                               (change)="onFileChangedOne($event);" style="width: 0px;height: 0px;overflow: hidden;">
+                      </label>
+                    </div>
+                    <div class="col-md-4 imgUp">
+                      <div class="imagePreview"></div>
+                      <label class="btn btn-dangerPic">Upload
+                        <input type="file" class="uploadFile img" value="Upload Photo"
+                               (change)="onFileChangedTwo($event);" style="width: 0px;height: 0px;overflow: hidden;">
+                      </label>
+                    </div>
+                    <div class="col-md-4 imgUp">
+                      <div class="imagePreview"></div>
+                      <label class="btn btn-dangerPic">Upload
+                        <input type="file" class="uploadFile img" value="Upload Photo"
+                               (change)="onFileChangedThree($event);" style="width: 0px;height: 0px;overflow: hidden;">
+                      </label>
+                    </div>
+                  </div>
+                  <br>
+                  <button type="submit" class="btn btn-danger pull-right" disabled>Delete</button>
+                  <button type="submit" class="btn btn-warning pull-right">Update</button>
+                  <button type="submit" class="btn btn-success pull-right" (click)="addCar();">Add</button>
+                  <div class="clearfix"></div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card card-profile">
+              <div class="card-avatar">
+                <a href="javascript:;">
+                  <img class="img" src="{{ carDisplayImage }}"/>
+                </a>
+              </div>
+              <div class="card-body">
+                <h6 class="card-category text-gray">Brand Name</h6>
+                <h4 class="card-title">{{ carDisplayBrandName }}</h4>
+                <!--<p class="card-description">
+                  Don't be scared of the truth because we need to restart the human foundation in truth And I love you
+                  like Kanye loves Kanye I love Rick Owens’ bed design but the back is...
+                </p>-->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

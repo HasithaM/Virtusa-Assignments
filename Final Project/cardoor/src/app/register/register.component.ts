@@ -1,7 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {CardoorRegisterService, User} from '../service/cardoor-register.service';
+import {CardoorRegisterService} from '../service/cardoor-register.service';
 import swal from 'sweetalert';
 import {isUndefined} from 'util';
+import {User} from '../model/user';
+import {APIResponse} from '../model/apiresponse';
+import {Approuter} from '../appconfig/approuter';
 
 @Component({
   selector: 'app-register',
@@ -12,29 +15,15 @@ export class RegisterComponent implements OnInit {
 
   user: User = new User('', '', '', '', '', '');
 
+  apiResponse: APIResponse;
+
   constructor(private cardoorService: CardoorRegisterService) {
   }
 
   ngOnInit(): void {
   }
 
-  reloadHome() {
-    window.location.href = 'http://' + window.location.hostname + ':' + window.location.port;
-  }
-
-  reloadLogin() {
-    window.location.href = 'http://' + window.location.hostname + ':' + window.location.port + '/login';
-  }
-
-  reloadAbout() {
-    window.location.href = 'http://' + window.location.hostname + ':' + window.location.port + '/about';
-  }
-
-  reloadContact() {
-    window.location.href = 'http://' + window.location.hostname + ':' + window.location.port + '/contact';
-  }
-
-  createUser(): void {
+  public createUser(): void {
     if (this.user.firstName !== null && !isUndefined(this.user.firstName) && this.user.firstName.trim() !== ''
       && this.user.lastName !== null && !isUndefined(this.user.lastName) && this.user.lastName.trim() !== ''
       && this.user.username !== null && !isUndefined(this.user.username) && this.user.username.trim() !== ''
@@ -43,42 +32,44 @@ export class RegisterComponent implements OnInit {
       && this.user.phoneNumber !== null && !isUndefined(this.user.phoneNumber) && this.user.phoneNumber.trim() !== '') {
       this.cardoorService.createUser(this.user)
         .subscribe(data => {
-          if (data.message === 'Username is Taken!') {
+          this.apiResponse = data;
+
+          if (this.apiResponse.message === 'Username is Taken!') {
             swal({
               title: 'Oops!',
               text: 'Username is Already Taken!',
               icon: 'error'
             });
-          } else if (data.message === 'Email is Taken!') {
+          } else if (this.apiResponse.message === 'Email is Taken!') {
             swal({
               title: 'Oops!',
               text: 'Email is Already Taken!',
               icon: 'error'
             });
-          } else if (data.message === 'Unsuccessful!') {
+          } else if (this.apiResponse.message === 'Unsuccessful!') {
             swal({
               title: 'Oops!',
               text: 'Error while Registering! Please Try Again!',
               icon: 'error'
             });
-          } else if (data.message === 'Unknown!') {
+          } else if (this.apiResponse.message === 'Unknown!') {
             swal({
               title: 'Oops!',
               text: 'Error while Registering! Please Try Again!',
               icon: 'error'
             });
-          } else if (data.message === 'Successful!') {
+          } else if (this.apiResponse.message === 'Successful!') {
             swal({
-              title: 'Successfull!',
+              title: 'Successful!',
               text: 'Successfully Registered!',
               icon: 'success',
               buttons: ['Home', 'Login'],
             })
               .then(result => {
                 if (result) {
-                  this.reloadLogin();
+                  Approuter.reloadLogin();
                 } else {
-                  this.reloadHome();
+                  Approuter.reloadHome();
                 }
               });
           }
@@ -98,5 +89,17 @@ export class RegisterComponent implements OnInit {
         icon: 'error'
       });
     }
+  }
+
+  public reloadLogin() {
+    Approuter.reloadLogin();
+  }
+
+  public reloadAbout() {
+    Approuter.reloadAbout();
+  }
+
+  public reloadContact() {
+    Approuter.reloadContact();
   }
 }
