@@ -74,6 +74,7 @@
     </dependencyManagement>
 
     <build>
+        <finalName>cardoor-authorization-service-0.0.1-SNAPSHOT</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

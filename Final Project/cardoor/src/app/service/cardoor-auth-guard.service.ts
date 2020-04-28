@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
 import {CardoorLoginService} from './cardoor-login.service';
-import {Approuter} from '../appconfig/approuter';
+import {AppRouter} from '../appconfig/app-router';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class CardoorAuthGuardService implements CanActivate {
     if (this.cardoorLoginService.isUserLoggedIn()) {
       return true;
     } else {
-      Approuter.reloadLogin();
+      AppRouter.reloadLogin();
       return false;
     }
   }

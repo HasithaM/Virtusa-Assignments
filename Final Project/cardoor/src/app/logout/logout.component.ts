@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {CardoorLoginService} from '../service/cardoor-login.service';
-import {Approuter} from '../appconfig/approuter';
+import {AppRouter} from '../appconfig/app-router';
 
 @Component({
   selector: 'app-logout',
@@ -21,6 +21,6 @@ export class LogoutComponent implements OnInit {
   }
 
   public goToHome() {
-    Approuter.reloadHome();
+    AppRouter.reloadHome();
   }
 }

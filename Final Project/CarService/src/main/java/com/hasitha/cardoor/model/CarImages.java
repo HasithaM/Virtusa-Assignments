@@ -19,14 +19,4 @@ public class CarImages {
     private byte[] imageTwo;
     @Lob
     private byte[] imageThree;
-
-    public CarImages() {
-    }
-
-    public CarImages(Integer id, byte[] imageOne, byte[] imageTwo, byte[] imageThree) {
-        this.id = id;
-        this.imageOne = imageOne;
-        this.imageTwo = imageTwo;
-        this.imageThree = imageThree;
-    }
 }

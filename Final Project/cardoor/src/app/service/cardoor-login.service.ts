@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Urlconfiguration} from '../appconfig/urlconfiguration';
+import {UrlConfiguration} from '../appconfig/url-configuration';
 import {APIResponse} from '../model/apiresponse';
 
 @Injectable({
@@ -12,7 +12,7 @@ export class CardoorLoginService {
   }
 
   public authenticate(username, password) {
-    return this.httpClient.get<APIResponse>(Urlconfiguration.URL_LOGIN_USER + username + '/' + password);
+    return this.httpClient.get<APIResponse>(UrlConfiguration.URL_LOGIN_USER + username + '/' + password);
   }
 
   public isUserLoggedIn() {

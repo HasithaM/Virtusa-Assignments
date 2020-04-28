@@ -1,10 +1,11 @@
 package com.hasitha.cardoor.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "car")
@@ -32,25 +33,9 @@ public class Car {
     private Integer bagsCanHold;
     private BigDecimal pricePerHour;
     private Boolean availability;
-    private Timestamp dateCreated;
 
-    public Car() {
-    }
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime dateCreated;
 
-    public Car(String carBrandName, String carNumber, CarModel carModel, CarImages carImages, String fuelType, String gearType, String noOfPassengers, Integer doorsCount, Integer mileagePerGallon, Boolean acNonAc, Integer bagsCanHold, BigDecimal pricePerHour, Boolean availability, Timestamp dateCreated) {
-        this.carBrandName = carBrandName;
-        this.carNumber = carNumber;
-        this.carModel = carModel;
-        this.carImages = carImages;
-        this.fuelType = fuelType;
-        this.gearType = gearType;
-        this.noOfPassengers = noOfPassengers;
-        this.doorsCount = doorsCount;
-        this.mileagePerGallon = mileagePerGallon;
-        this.acNonAc = acNonAc;
-        this.bagsCanHold = bagsCanHold;
-        this.pricePerHour = pricePerHour;
-        this.availability = availability;
-        this.dateCreated = dateCreated;
-    }
+    private Boolean status;
 }

@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {APIResponse} from '../model/apiresponse';
+import {UrlConfiguration} from '../appconfig/url-configuration';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,11 @@ export class CardoorTokenService {
   }
 
   public checkToken(username, accessToken, refreshToken) {
-    return this.httpClient.get<APIResponse>('http://localhost:8595/user/checktoken/' + username + '/' + accessToken + '/' + refreshToken);
+    return this.httpClient.get<APIResponse>(UrlConfiguration.URL_CHECK_TOKEN + username + '/' + accessToken + '/' + refreshToken);
+  }
+
+  public refreshToken(username, refreshToken) {
+    return this.httpClient.get<APIResponse>(UrlConfiguration.URL_REFRESH_TOKEN + username + '/' + refreshToken);
   }
 
   /*public createAuthorizationHeader() {

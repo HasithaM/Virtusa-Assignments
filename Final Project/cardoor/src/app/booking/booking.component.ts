@@ -4,9 +4,9 @@ import {ActivatedRoute} from '@angular/router';
 import swal from 'sweetalert';
 import {CardoorTokenService} from '../service/cardoor-token.service';
 import {APIResponse} from '../model/apiresponse';
-import {Approuter} from '../appconfig/approuter';
+import {AppRouter} from '../appconfig/app-router';
 import {isUndefined} from 'util';
-import {NgbDate} from '@ng-bootstrap/ng-bootstrap';
+import {formatDate} from '@angular/common';
 
 @Component({
   selector: 'app-booking',
@@ -21,8 +21,8 @@ export class BookingComponent implements OnInit {
   tokenStatus: boolean;
 
   pickUpLocation: any = 'Pickup Location';
-  pickUpDate: any;
-  returnDate: any;
+  pickUpDate: any = '';
+  returnDate: any = '';
   payingAmount: any = 'Choose';
 
   totalPayment: number;
@@ -130,22 +130,18 @@ export class BookingComponent implements OnInit {
       });
   }
 
-  public goToCars() {
-    Approuter.reloadCars();
-  }
-
-  public goToLogout() {
-    Approuter.reloadLogout();
-  }
-
-  public completePayment(id: any, pickUpLocation: any, pickUpDate: any, returnDate: any, payingAmount: any) {
-
+  public completePayment(id: any, pickUpLocation: any, pickUpDate: any, returnDate: any, payingAmount: any, totalPayment: any) {
     if (this.pickUpLocation !== null && !isUndefined(this.pickUpLocation) && this.pickUpLocation.trim() !== ''
+      && this.pickUpLocation !== 'Pickup Location'
       && this.pickUpDate !== null && !isUndefined(this.pickUpDate) && this.pickUpDate.trim() !== ''
       && this.returnDate !== null && !isUndefined(this.returnDate) && this.returnDate.trim() !== ''
       && this.payingAmount !== null && !isUndefined(this.payingAmount) && this.payingAmount.trim() !== ''
       && this.payingAmount !== 'Choose') {
-      Approuter.completePayment(id, pickUpLocation, pickUpDate, returnDate, payingAmount);
+
+      const pickUpDateF = formatDate(new Date(pickUpDate), 'yyyy-MM-dd', 'en_US');
+      const returnDateF = formatDate(new Date(returnDate), 'yyyy-MM-dd', 'en_US');
+
+      AppRouter.completePayment(id, pickUpLocation, pickUpDateF, returnDateF, payingAmount, totalPayment);
     } else {
       swal({
         title: 'Oops!',
@@ -156,6 +152,29 @@ export class BookingComponent implements OnInit {
   }
 
   public calculateAmount(pricePerHour: any, pickUpDate: any, returnDate: any) {
-    const fromDate = new Date(pickUpDate);
+    if (this.pickUpLocation !== null && !isUndefined(this.pickUpLocation) && this.pickUpLocation.trim() !== ''
+      && this.pickUpLocation !== 'Pickup Location'
+      && this.pickUpDate !== null && !isUndefined(this.pickUpDate) && this.pickUpDate.trim() !== ''
+      && this.returnDate !== null && !isUndefined(this.returnDate) && this.returnDate.trim() !== '') {
+      const fromDate = new Date(pickUpDate);
+      const toDate = new Date(returnDate);
+
+      this.totalDays = (toDate.getTime() - fromDate.getTime()) / (1000 * 3600 * 24);
+      this.totalPayment = (pricePerHour * 24) * this.totalDays;
+    } else {
+      swal({
+        title: 'Oops!',
+        text: 'Please fill Pickup Location, Pickup Date and Return Date!',
+        icon: 'error'
+      });
+    }
+  }
+
+  public goToCars() {
+    AppRouter.reloadCars('all');
+  }
+
+  public goToLogout() {
+    AppRouter.reloadLogout();
   }
 }

@@ -4,7 +4,7 @@ import {Router} from '@angular/router';
 import swal from 'sweetalert';
 import {isUndefined} from 'util';
 import {APIResponse} from '../model/apiresponse';
-import {Approuter} from '../appconfig/approuter';
+import {AppRouter} from '../appconfig/app-router';
 
 @Component({
   selector: 'app-login',
@@ -26,15 +26,15 @@ export class LoginComponent implements OnInit {
   }
 
   public reloadAbout() {
-    Approuter.reloadAbout();
+    AppRouter.reloadAbout();
   }
 
   public reloadContact() {
-    Approuter.reloadContact();
+    AppRouter.reloadContact();
   }
 
   public reloadRegister() {
-    Approuter.reloadRegister();
+    AppRouter.reloadRegister();
   }
 
   public loginUser(): void {
@@ -63,9 +63,9 @@ export class LoginComponent implements OnInit {
             /* this.router.navigate(['']); */
 
             if (this.apiResponse.parameter === 'U') {
-              Approuter.reloadHome();
+              AppRouter.reloadHome();
             } else if (this.apiResponse.parameter === 'A') {
-              Approuter.reloadAdmin();
+              AppRouter.reloadAdmin();
             }
           }
         }, error => {

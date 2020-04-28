@@ -1,0 +1,62 @@
+<div class="wrapper ">
+
+  <!-- Sidebar -->
+  <app-adminsidebar></app-adminsidebar>
+  <!-- End Sidebar -->
+
+  <div class="main-panel">
+
+    <!-- Navbar -->
+    <app-adminnavbar></app-adminnavbar>
+    <!-- End Navbar -->
+
+    <div class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header card-header-danger">
+                <!--<h4 class="card-title mt-1">All Cars</h4>-->
+                <!--<p class="card-category">Cars in Service</p>-->
+                <h4 style="display: inline-block;">Payments</h4>
+
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead class="text-danger">
+                    <th>ID</th>
+                    <th>Booking ID</th>
+                    <th>Customer</th>
+                    <th>Payed Amount</th>
+                    <th>Total Amount</th>
+                    <th>Status</th>
+                    <th>Payed Date</th>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let payment of payments">
+                      <td>{{ payment.id }}</td>
+                      <td>{{ payment.bookingId }}</td>
+                      <td>{{ payment.user.firstName + ' ' + payment.user.lastName }}</td>
+                      <td>Rs. {{ payment.payedAmount }}.00</td>
+                      <td>Rs. {{ payment.totalRentPrice }}.00</td>
+                      <td>
+                        <span class="badge {{ (payment.status === 'P')? 'badge-success':
+                         (payment.status === 'H')? 'badge-warning': 'badge-danger' }}">
+                          {{ (payment.status === 'P') ? 'FULL PAYED' :
+                          (payment.status === 'H') ? 'HALF PAYED' : 'REFUNDED' }}
+                        </span>
+                      </td>
+                      <td>{{payment.paymentDate}}</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

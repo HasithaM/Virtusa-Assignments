@@ -1,6 +1,8 @@
 package com.hasitha.cardoor.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.hasitha.cardoor.model.APIResponse;
 import com.hasitha.cardoor.model.Car;
 import com.hasitha.cardoor.model.CarImages;
@@ -35,23 +37,30 @@ public class CarController {
         return carService.saveCar(updatedCar);
     }
 
-    @PutMapping(value = "/car/{carId}")
-    public APIResponse updateCar(@RequestParam("imageOne") MultipartFile multipartFileOne, @RequestParam("imageTwo") MultipartFile multipartFileTwo, @RequestParam("imageThree") MultipartFile multipartFileThree, @RequestParam("car") String car, @PathVariable Integer carId) throws IOException {
-        Car updatedCar = new ObjectMapper().readValue(car, Car.class);
+    @PutMapping(value = "/car")
+    public APIResponse updateCar(
+            @RequestParam(value = "imageOne", required = false) MultipartFile multipartFileOne,
+            @RequestParam(value = "imageTwo", required = false) MultipartFile multipartFileTwo,
+            @RequestParam(value = "imageThree", required = false) MultipartFile multipartFileThree,
+            @RequestParam(value = "car") String car) throws IOException {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        Car updatedCar = objectMapper.readValue(car, Car.class);
 
         CarImages carImages = new CarImages();
 
-        if (!multipartFileOne.isEmpty() && multipartFileOne.getSize() > 0) {
+        if (multipartFileOne != null) {
             carImages.setImageOne(multipartFileOne.getBytes());
             updatedCar.setCarImages(carImages);
         }
 
-        if (!multipartFileTwo.isEmpty() && multipartFileTwo.getSize() > 0) {
+        if (multipartFileTwo != null) {
             carImages.setImageTwo(multipartFileTwo.getBytes());
             updatedCar.setCarImages(carImages);
         }
 
-        if (!multipartFileThree.isEmpty() && multipartFileThree.getSize() > 0) {
+        if (multipartFileThree != null) {
             carImages.setImageThree(multipartFileThree.getBytes());
             updatedCar.setCarImages(carImages);
         }
@@ -59,7 +68,7 @@ public class CarController {
         return carService.updateCar(updatedCar);
     }
 
-    @DeleteMapping(value = "/car/{carId}")
+    @GetMapping(value = "/delete/{carId}")
     public APIResponse deleteCar(@PathVariable Integer carId) {
         return carService.deleteCar(carId);
     }
@@ -82,5 +91,15 @@ public class CarController {
     @GetMapping(value = "/car/{carId}")
     public Optional<Car> getCarById(@PathVariable Integer carId) {
         return carService.findById(carId);
+    }
+
+    @GetMapping(value = "/car/available/{carId}")
+    public APIResponse makeCarAvailable(@PathVariable Integer carId) {
+        return carService.makeCarAvailable(carId);
+    }
+
+    @GetMapping(value = "/car/unavailable/{carId}")
+    public APIResponse makeCarUnavailable(@PathVariable Integer carId) {
+        return carService.makeCarUnavailable(carId);
     }
 }

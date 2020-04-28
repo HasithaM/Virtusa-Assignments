@@ -14,12 +14,4 @@ public class CarModel {
     private Integer id;
     private String modelName;
     private String modelColor;
-
-    public CarModel() {
-    }
-
-    public CarModel(String modelName, String modelColor) {
-        this.modelName = modelName;
-        this.modelColor = modelColor;
-    }
 }

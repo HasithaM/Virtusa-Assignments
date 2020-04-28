@@ -1,0 +1,77 @@
+<div class="wrapper ">
+
+  <!-- Sidebar -->
+  <app-adminsidebar></app-adminsidebar>
+  <!-- End Sidebar -->
+
+  <div class="main-panel">
+
+    <!-- Navbar -->
+    <app-adminnavbar></app-adminnavbar>
+    <!-- End Navbar -->
+
+    <div class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header card-header-danger">
+                <!--<h4 class="card-title mt-1">All Cars</h4>-->
+                <!--<p class="card-category">Cars in Service</p>-->
+                <h4 style="display: inline-block;">Cars in Service</h4>
+
+                <div class="btn-group mb-0 mt-0 pull-right">
+                  <button type="button" class="btn btn-danger">Brand Name</button>
+                  <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="sr-only">Toggle Dropdown</span>
+                  </button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="javascript:;">Action</a>
+                    <a class="dropdown-item" href="javascript:;">Another action</a>
+                    <a class="dropdown-item" href="javascript:;">Something else here</a>
+                  </div>
+                </div>
+
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead class="text-danger">
+                    <th>ID</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Car Number</th>
+                    <th>Availability</th>
+                    <th>Price per Hour</th>
+                    <th>Action</th>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let car of cars">
+                      <td *ngIf="car.status !== false">{{ car.id }}</td>
+                      <td *ngIf="car.status !== false" style="width: 15%">
+                        <img
+                          src="{{ 'data:image/jpeg;base64,' + car.carImages.imageOne }}"
+                          class="img-fluid img-thumbnail">
+                      </td>
+                      <td *ngIf="car.status !== false">{{ car.carBrandName + ' ' + car.carModel.modelName }}</td>
+                      <td *ngIf="car.status !== false">{{ car.carNumber }}</td>
+                      <td *ngIf="car.status !== false">{{ car.availability === true ? 'Available' : 'Not Available' }}</td>
+                      <td *ngIf="car.status !== false" class="text-danger">{{ 'Rs: ' + car.pricePerHour + '.00' }}</td>
+                      <td *ngIf="car.status !== false">
+                        <a class="text-success" rel="tooltip" title="UPDATE" style="cursor: pointer;" (click)="updateCar(car.id);"><i
+                          class="material-icons success">check_circle_outline</i></a>
+                        <a class="text-danger" rel="tooltip" title="DELETE" style="cursor: pointer;" (click)="deleteCar(car.id);"><i
+                          class="material-icons">highlight_off</i></a>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -7,7 +7,7 @@
         <div class="section-title  text-center">
           <h2>Booking History</h2>
           <span class="title-line"><i class="fa fa-car"></i></span>
-          <p>We would love to serve you.</p>
+          <p>Your car booking history.</p>
         </div>
       </div>
       <!-- Page Title End -->
@@ -23,12 +23,14 @@
       <!-- Car List Content Start -->
       <div class="col-lg-8">
         <div class="car-list-content">
+
           <!-- Single Car Start -->
-          <div class="single-car-wrap">
+          <div class="single-car-wrap" *ngFor="let booking of bookings">
             <div class="row">
               <!-- Single Car Thumbnail -->
               <div class="col-lg-5">
-                <div class="car-list-thumb" style="background-image: url(assets/admin/img/brands/audi.png);"></div>
+                <div class="car-list-thumb car-thumb-4"
+                     style="background-image: url({{  'data:image/jpeg;base64,' + booking.car.carImages.imageOne  }});"></div>
               </div>
               <!-- Single Car Thumbnail -->
 
@@ -37,23 +39,40 @@
                 <div class="display-table">
                   <div class="display-table-cell">
                     <div class="car-list-info">
-                      <h2><a href="#">Aston Martin One-77</a></h2>
-                      <h5>39$ Rent /per a day</h5>
-                      <p>Vivamus eget nibh. Etiam cursus leo vel metus. Nulla facilisi. Aenean inorci luctus et ultrices
-                        posuere cubilia.</p>
+                      <h2><a>{{ booking.car.carBrandName + ' ' + booking.car.carModel.modelName }}</a></h2>
+                      <h5>Rs {{ booking.payment.payedAmount }}.00</h5>
+                      <p>Pickup Location: {{ booking.pickupLocation }} <br/> Payment
+                        Status: {{ booking.payment.status === 'P' ? 'Full Payment' : 'Half Payment' }}</p>
                       <ul class="car-info-list">
-                        <li>Air Condition</li>
-                        <li>Diesel</li>
-                        <li>Auto</li>
+                        <li>FROM {{ booking.fromDate }}</li>
+                        <li>TO {{ booking.toDate }}</li>
                       </ul>
-                      <p class="rating">
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star unmark"></i>
-                      </p>
-                      <a href="#" class="rent-btn">Book It</a>
+                      <!--<p class="rating">-->
+                      <h3 class="rating"><span class="badge {{ booking.payment.refundRequest === 1? 'badge-warning':
+                        (booking.status === 'B')? 'badge-success': (booking.status === 'D')? 'badge-info': 'badge-danger' }}">
+                        {{ booking.payment.refundRequest === 1 ? 'Refund Pending' :
+                        (booking.status === 'B') ? 'Booked' : (booking.status === 'D') ? 'Done' : 'Canceled' }}
+                      </span>
+
+                      </h3>
+
+                      <!--<i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star unmark"></i>-->
+                      <!--</p>-->
+
+                      <a class="rent-btn"
+                         (click)=" (booking.payment.refundRequest === 1)? refundRequested() :
+                         (booking.status === 'B')? cancelAndRefund(booking.payment.bookingId):
+                         (booking.status === 'D')? bookingDone(): bookingRefunded()"
+                         style="cursor: pointer">{{
+                        (booking.payment.refundRequest === 1) ? 'Refund Requested' :
+                          (booking.status === 'B') ? 'Cancel and Ask for Refund' :
+                            (booking.status === 'D') ? 'Booking Done' : 'Canceled and Refunded'
+                        }}
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -62,6 +81,7 @@
             </div>
           </div>
           <!-- Single Car End -->
+
         </div>
 
         <!-- Page Pagination Start -->

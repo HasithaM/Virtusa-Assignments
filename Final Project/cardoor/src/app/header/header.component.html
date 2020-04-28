@@ -63,24 +63,25 @@
         <div class="col-lg-8 d-none d-xl-block">
           <nav class="mainmenu alignright">
             <ul>
-              <li class="active"><a routerLink="" (click)="reloadHome();">Home</a></li>
-              <li><a routerLink="/about" (click)="reloadAbout();">About</a></li>
-              <li><a routerLink="/cars" [queryParams]="{brand: 'all'}">Cars</a>
+              <li [ngClass]="{'active': isActive(' ')}"><a (click)="reloadHome();" style="cursor: pointer;">Home</a></li>
+              <li [ngClass]="{'active': isActive('/about')}"><a (click)="reloadAbout();" style="cursor:pointer;">About</a></li>
+              <!-- routerLink="/cars" [queryParams]="{brand: 'all'}" -->
+              <li [ngClass]="{'active': isActive('/cars')}"><a *ngIf="cardoorLoginService.isUserLoggedIn()" (click)="reloadCars('all');" style="cursor: pointer;">Cars</a>
                 <ul>
-                  <li><a routerLink="/cars" [queryParams]="{brand: 'MERCEDES BENZ'}">MERCEDES BENZ</a></li>
-                  <li><a routerLink="/cars" [queryParams]="{brand: 'BMW'}">BMW</a></li>
-                  <li><a routerLink="/cars" [queryParams]="{brand: 'AUDI'}">AUDI</a></li>
-                  <li><a routerLink="/cars" [queryParams]="{brand: 'TOYOTA'}">TOYOTA</a></li>
-                  <li><a routerLink="/cars" [queryParams]="{brand: 'NISSAN'}">NISSAN</a></li>
-                  <li><a routerLink="/cars" [queryParams]="{brand: 'MAZDA'}">MAZDA</a></li>
+                  <li><a (click)="reloadCars('MERCEDES BENZ');" style="cursor: pointer;">MERCEDES BENZ</a></li>
+                  <li><a (click)="reloadCars('BMW');" style="cursor: pointer;">BMW</a></li>
+                  <li><a (click)="reloadCars('AUDI');" style="cursor: pointer;">AUDI</a></li>
+                  <li><a (click)="reloadCars('TOYOTA');" style="cursor: pointer;">TOYOTA</a></li>
+                  <li><a (click)="reloadCars('NISSAN');" style="cursor: pointer;">NISSAN</a></li>
+                  <li><a (click)="reloadCars('MAZDA');" style="cursor: pointer;">MAZDA</a></li>
                 </ul>
               </li>
-              <li><a routerLink="/contact" (click)="reloadContact();">Contact</a></li>
-              <li><a *ngIf="!cardoorLoginService.isUserLoggedIn()" routerLink="/login"
-                     (click)="reloadLogin();">Login</a></li>
-              <li><a *ngIf="cardoorLoginService.isUserLoggedIn() && cardoorLoginService.isUserAnAdmin()"
-                     routerLink="/admin" (click)="reloadAdmin();">Admin Home</a></li>
-              <li><a *ngIf="cardoorLoginService.isUserLoggedIn()" routerLink="/logout">Logout</a></li>
+              <li [ngClass]="{'active': isActive('/booking/history')}"><a *ngIf="cardoorLoginService.isUserLoggedIn()" (click)="reloadBookingHistory();" style="cursor:pointer;">My Bookings</a></li>
+              <li [ngClass]="{'active': isActive('/contact')}"><a (click)="reloadContact();" style="cursor: pointer;">Contact</a></li>
+              <li [ngClass]="{'active': isActive('/login')}"><a *ngIf="!cardoorLoginService.isUserLoggedIn()" (click)="reloadLogin();" style="cursor: pointer;">Login</a></li>
+              <li [ngClass]="{'active': isActive('/admin')}"><a *ngIf="cardoorLoginService.isUserLoggedIn() && cardoorLoginService.isUserAnAdmin()"
+                     (click)="reloadAdmin();" style="cursor: pointer;">Admin Home</a></li>
+              <li [ngClass]="{'active': isActive('/logout')}"><a *ngIf="cardoorLoginService.isUserLoggedIn()" (click)="reloadLogout();" style="cursor: pointer;">Logout</a></li>
             </ul>
           </nav>
         </div>

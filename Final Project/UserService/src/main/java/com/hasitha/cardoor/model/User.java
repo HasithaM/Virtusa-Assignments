@@ -9,7 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -55,7 +55,7 @@ public class User implements Serializable {
     private List<Role> roles;
 
     @Column(name = "dateJoined")
-    private Timestamp dateJoined;
+    private LocalDateTime dateJoined;
     @Column(name = "status")
     private String status; // a - active, d - deactivated
 
@@ -70,46 +70,6 @@ public class User implements Serializable {
 
     @Transient
     private Booking[] bookings;
-
-    @Transient
-    private Payment[] payments;
-
-    public User() {
-    }
-
-    public User(@NotEmpty(message = "*Please Provide Your FirstName") String firstName, @NotEmpty(message = "*Please Provide Your LastName") String lastName, @Email @NotEmpty(message = "*Please Provide Your Email") String emailAddress, @Email @NotEmpty(message = "*Please Provide Your Username (Email)") String username, @NotEmpty(message = "*Please Provide Your Password") @Length(min = 8, message = "*Your Password must have at least 8 Characters") String password, @NotEmpty(message = "*Please Provide Your Phone Number") @Length(min = 10, max = 10, message = "*Your Phone Number must have 10 Digits") String phoneNumber, List<Role> roles, Timestamp dateJoined, String status, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.emailAddress = emailAddress;
-        this.username = username;
-        this.password = password;
-        this.phoneNumber = phoneNumber;
-        this.roles = roles;
-        this.dateJoined = dateJoined;
-        this.status = status;
-        this.enabled = enabled;
-        this.accountNonExpired = accountNonExpired;
-        this.credentialsNonExpired = credentialsNonExpired;
-        this.accountNonLocked = accountNonLocked;
-    }
-
-    public User(@NotEmpty(message = "*Please Provide Your FirstName") String firstName, @NotEmpty(message = "*Please Provide Your LastName") String lastName, @Email @NotEmpty(message = "*Please Provide Your Email") String emailAddress, @Email @NotEmpty(message = "*Please Provide Your Username (Email)") String username, @NotEmpty(message = "*Please Provide Your Password") @Length(min = 8, message = "*Your Password must have at least 8 Characters") String password, @NotEmpty(message = "*Please Provide Your Phone Number") @Length(min = 10, max = 10, message = "*Your Phone Number must have 10 Digits") String phoneNumber, List<Role> roles, Timestamp dateJoined, String status, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Booking[] bookings, Payment[] payments) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.emailAddress = emailAddress;
-        this.username = username;
-        this.password = password;
-        this.phoneNumber = phoneNumber;
-        this.roles = roles;
-        this.dateJoined = dateJoined;
-        this.status = status;
-        this.enabled = enabled;
-        this.accountNonExpired = accountNonExpired;
-        this.credentialsNonExpired = credentialsNonExpired;
-        this.accountNonLocked = accountNonLocked;
-        this.bookings = bookings;
-        this.payments = payments;
-    }
 
     @JsonIgnore
     public String getPassword() {

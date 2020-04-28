@@ -1,0 +1,62 @@
+<div class="wrapper ">
+
+  <!-- Sidebar -->
+  <app-adminsidebar></app-adminsidebar>
+  <!-- End Sidebar -->
+
+  <div class="main-panel">
+
+    <!-- Navbar -->
+    <app-adminnavbar></app-adminnavbar>
+    <!-- End Navbar -->
+
+    <div class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header card-header-danger">
+                <!--<h4 class="card-title mt-1">All Cars</h4>-->
+                <!--<p class="card-category">Cars in Service</p>-->
+                <h4 style="display: inline-block;">Refund Requests</h4>
+
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead class="text-danger">
+                    <th>ID</th>
+                    <th>Customer</th>
+                    <th>Payed Amount</th>
+                    <th>Total Rent</th>
+                    <th>Status</th>
+                    <th>Action (Refund)</th>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let request of requests">
+                      <td>{{ request.id }}</td>
+                      <td>{{ request.user.firstName + ' ' + request.user.lastName }}</td>
+                      <td>Rs. {{ request.payedAmount }}.00</td>
+                      <td>Rs. {{ request.totalRentPrice }}.00</td>
+                      <td>
+                        <span class="badge badge-warning">
+                          Refund Request
+                        </span>
+                      </td>
+                      <td align="center">
+                        <a class="text-success" rel="tooltip" title="APPROVE" style="cursor: pointer;"
+                           (click)="approveRefund(request.id, request.bookingId);"><i
+                          class="material-icons success">check_circle_outline</i></a>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

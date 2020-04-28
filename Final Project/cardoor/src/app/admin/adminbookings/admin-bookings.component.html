@@ -1,0 +1,71 @@
+<div class="wrapper ">
+
+  <!-- Sidebar -->
+  <app-adminsidebar></app-adminsidebar>
+  <!-- End Sidebar -->
+
+  <div class="main-panel">
+
+    <!-- Navbar -->
+    <app-adminnavbar></app-adminnavbar>
+    <!-- End Navbar -->
+
+    <div class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header card-header-danger">
+                <!--<h4 class="card-title mt-1">All Cars</h4>-->
+                <!--<p class="card-category">Cars in Service</p>-->
+                <h4 style="display: inline-block;">All Bookings</h4>
+
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead class="text-danger">
+                    <th>ID</th>
+                    <th>Car</th>
+                    <th>Customer</th>
+                    <th>Booked From - To</th>
+                    <th>Pick up Location</th>
+                    <th>Status</th>
+                    <th>Booked Date</th>
+                    <th>Action (Complete)</th>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let booking of bookings">
+                      <td>{{ booking.id }}</td>
+                      <td style="width: 15%">
+                        <img
+                          src="{{ 'data:image/jpeg;base64,' + booking.car.carImages.imageOne }}"
+                          class="img-fluid img-thumbnail">
+                      </td>
+                      <td>{{ booking.user.firstName + ' ' + booking.user.lastName }}</td>
+                      <td>{{ booking.fromDate + ' - ' + booking.toDate }}</td>
+                      <td>{{ booking.pickupLocation }}</td>
+                      <td>
+                        <span class="badge {{ (booking.status === 'B')? 'badge-success':
+                        (booking.status === 'D')? 'badge-info': 'badge-danger' }}">
+                        {{ (booking.status === 'B') ? 'Booked' : (booking.status === 'D') ? 'Done' : 'Canceled' }}
+                      </span>
+                      </td>
+                      <td>{{ booking.dateBooked }}</td>
+                      <td>
+                        <a class="text-success" rel="tooltip" title="APPROVE" style="cursor: pointer;"
+                           (click)="(booking.status === 'B')? completeBooking(booking.id): warningMessage()"><i
+                          class="material-icons success">check_circle_outline</i></a>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

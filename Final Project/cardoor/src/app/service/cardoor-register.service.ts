@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Urlconfiguration} from '../appconfig/urlconfiguration';
+import {UrlConfiguration} from '../appconfig/url-configuration';
 import {User} from '../model/user';
 import {APIResponse} from '../model/apiresponse';
 
@@ -13,11 +13,15 @@ export class CardoorRegisterService {
   }
 
   public createUser(user) {
-    return this.httpClient.post<APIResponse>(Urlconfiguration.URL_REGISTER_USER, user);
+    return this.httpClient.post<APIResponse>(UrlConfiguration.URL_REGISTER_USER, user);
   }
 
   public getUserByEmail(user) {
-    return this.httpClient.get<User>(Urlconfiguration.URL_GET_USER + user.emailAddress);
+    return this.httpClient.get<User>(UrlConfiguration.URL_GET_USER + user.emailAddress);
+  }
+
+  public getUserById(id) {
+    return this.httpClient.get<User>(UrlConfiguration.URL_GET_USER_BY_ID + id);
   }
 
   /*public updateUser(user) {
@@ -27,4 +31,8 @@ export class CardoorRegisterService {
   public deleteUser(user) {
     return this.httpClient.delete<User>('http://localhost:8595/user/user', user);
   }*/
+
+  public countAllUsers() {
+    return this.httpClient.get<any>(UrlConfiguration.URL_COUNT_ALL_USERS);
+  }
 }

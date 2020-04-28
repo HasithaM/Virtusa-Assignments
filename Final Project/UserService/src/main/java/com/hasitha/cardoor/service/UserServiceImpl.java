@@ -3,10 +3,7 @@ package com.hasitha.cardoor.service;
 import com.hasitha.cardoor.appconfig.URLConfiguration;
 import com.hasitha.cardoor.exceptionhandler.ResourceNotFoundException;
 import com.hasitha.cardoor.exceptionhandler.RestTemplateResponseErrorHandler;
-import com.hasitha.cardoor.model.AccessToken;
-import com.hasitha.cardoor.model.APIResponse;
-import com.hasitha.cardoor.model.Role;
-import com.hasitha.cardoor.model.User;
+import com.hasitha.cardoor.model.*;
 import com.hasitha.cardoor.repository.RoleRepository;
 import com.hasitha.cardoor.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +16,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -62,6 +59,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<Booking> getUserBookingDetails(String username, String authorization) {
+        User currentUser = userRepository.findByUsername(username);
+
+        if (currentUser != null) {
+
+            HttpEntity httpEntity = new HttpEntity<>(setAccessTokenHeader(authorization));
+
+            restTemplate.setErrorHandler(restTemplateResponseErrorHandler);
+
+            ResponseEntity<Booking[]> responseEntity = restTemplate.exchange(
+                    URLConfiguration.GET_BOOKING_DETAILS + currentUser.getId(), HttpMethod.GET, httpEntity, Booking[].class);
+
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                return Arrays.asList(responseEntity.getBody());
+            }
+        }
+        return null;
+    }
+
+    @Override
     public User findUserByUsername(String username) {
         return userRepository.findByUsername(username);
     }
@@ -80,47 +97,121 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public APIResponse getCustomerID(String username) {
+        User user = userRepository.findByUsername(username);
+
+        if (user != null)
+            return new APIResponse(200, "Successful!", String.valueOf(user.getId()));
+        else
+            return new APIResponse(400, "Unsuccessful!");
+    }
+
+    @Override
     public APIResponse createUser(User user) {
         User usernameValidation = userRepository.findByUsername(user.getUsername());
         User emailValidation = userRepository.findByEmailAddress(user.getEmailAddress());
 
         if (usernameValidation != null)
-            return new APIResponse(404, "Username is Taken!");
+            return new APIResponse(400, "Username is Taken!");
 
         if (emailValidation != null)
-            return new APIResponse(404, "Email is Taken!");
+            return new APIResponse(400, "Email is Taken!");
 
         if (usernameValidation == null && emailValidation == null) {
             Role userRole = roleRepository.findByName("ROLE_USER");
 
-            User updateUser = new User();
+            List<Role> roleList = new ArrayList<>();
+            roleList.add(userRole);
+
+            /*User updateUser = new User();
             updateUser.setFirstName(user.getFirstName());
             updateUser.setLastName(user.getLastName());
             updateUser.setEmailAddress(user.getEmailAddress());
             updateUser.setUsername(user.getUsername());
             updateUser.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-            updateUser.setPhoneNumber(user.getPhoneNumber());
+            updateUser.setPhoneNumber(user.getPhoneNumber());*/
 
-            List<Role> roleList = new ArrayList<>();
-            roleList.add(userRole);
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
-            updateUser.setRoles(roleList);
-            updateUser.setDateJoined(new Timestamp(System.currentTimeMillis()));
+            /*updateUser.setRoles(roleList);
+            updateUser.setDateJoined(getCurrentDateTime());
             updateUser.setStatus("A");
             updateUser.setEnabled(Boolean.TRUE);
             updateUser.setAccountNonExpired(Boolean.TRUE);
             updateUser.setCredentialsNonExpired(Boolean.TRUE);
-            updateUser.setAccountNonLocked(Boolean.TRUE);
+            updateUser.setAccountNonLocked(Boolean.TRUE);*/
 
-            User createdUser = userRepository.save(updateUser);
+            user.setRoles(roleList);
+            user.setDateJoined(getCurrentDateTime());
+            user.setStatus("A");
+            user.setEnabled(Boolean.TRUE);
+            user.setAccountNonExpired(Boolean.TRUE);
+            user.setCredentialsNonExpired(Boolean.TRUE);
+            user.setAccountNonLocked(Boolean.TRUE);
+
+            User createdUser = userRepository.save(user);
 
             if (createdUser != null)
                 return new APIResponse(200, "Successful!");
             else
-                return new APIResponse(404, "Unsuccessful!");
+                return new APIResponse(400, "Unsuccessful!");
         }
 
-        return new APIResponse(404, "Unknown!");
+        return new APIResponse(400, "Unknown!");
+    }
+
+    @Override
+    public APIResponse createAdminUser(User user) {
+        User usernameValidation = userRepository.findByUsername(user.getUsername());
+        User emailValidation = userRepository.findByEmailAddress(user.getEmailAddress());
+
+        if (usernameValidation != null)
+            return new APIResponse(400, "Username is Taken!");
+
+        if (emailValidation != null)
+            return new APIResponse(400, "Email is Taken!");
+
+        if (usernameValidation == null && emailValidation == null) {
+            Role userRole = roleRepository.findByName("ROLE_ADMIN");
+
+            List<Role> roleList = new ArrayList<>();
+            roleList.add(userRole);
+
+            /*User updateUser = new User();
+            updateUser.setFirstName(user.getFirstName());
+            updateUser.setLastName(user.getLastName());
+            updateUser.setEmailAddress(user.getEmailAddress());
+            updateUser.setUsername(user.getUsername());
+            updateUser.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            updateUser.setPhoneNumber(user.getPhoneNumber());*/
+
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+
+            /*updateUser.setRoles(roleList);
+            updateUser.setDateJoined(getCurrentDateTime());
+            updateUser.setStatus("A");
+            updateUser.setEnabled(Boolean.TRUE);
+            updateUser.setAccountNonExpired(Boolean.TRUE);
+            updateUser.setCredentialsNonExpired(Boolean.TRUE);
+            updateUser.setAccountNonLocked(Boolean.TRUE);*/
+
+            user.setRoles(roleList);
+            user.setDateJoined(getCurrentDateTime());
+            user.setStatus("A");
+            user.setEnabled(Boolean.TRUE);
+            user.setAccountNonExpired(Boolean.TRUE);
+            user.setCredentialsNonExpired(Boolean.TRUE);
+            user.setAccountNonLocked(Boolean.TRUE);
+
+            User createdUser = userRepository.save(user);
+
+            if (createdUser != null)
+                return new APIResponse(200, "Successful!");
+            else
+                return new APIResponse(400, "Unsuccessful!");
+        }
+
+        return new APIResponse(400, "Unknown!");
     }
 
     @Override
@@ -128,17 +219,17 @@ public class UserServiceImpl implements UserService {
         User currentUser = userRepository.findByUsername(username);
 
         if (currentUser != null) {
-            User updateUser = currentUser;
-            updateUser.setFirstName(user.getFirstName());
-            updateUser.setLastName(user.getLastName());
-            updateUser.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-            updateUser.setPhoneNumber(user.getPhoneNumber());
+            currentUser.setFirstName(user.getFirstName());
+            currentUser.setLastName(user.getLastName());
+            currentUser.setEmailAddress(user.getEmailAddress());
+            currentUser.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            currentUser.setPhoneNumber(user.getPhoneNumber());
 
-            userRepository.save(updateUser);
+            userRepository.save(currentUser);
 
             return new APIResponse(200, "Successful!");
         } else {
-            return new APIResponse(404, "User Not Found!");
+            return new APIResponse(400, "User Not Found!");
         }
     }
 
@@ -147,11 +238,13 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByUsername(username);
 
         if (user != null) {
-            userRepository.deleteById(user.getId());
+            user.setStatus("D");
+
+            userRepository.save(user);
 
             return new APIResponse(200, "Successful!");
         } else {
-            return new APIResponse(404, "Unsuccessful!");
+            return new APIResponse(400, "Unsuccessful!");
         }
     }
 
@@ -161,16 +254,16 @@ public class UserServiceImpl implements UserService {
 
         if (dbUser == null) {
             // throw new ResourceNotFoundException("Username or Password is Wrong!");
-            return new APIResponse(404, "Username or Password is Wrong!");
+            return new APIResponse(400, "Username or Password is Wrong!");
         } else {
             if (!bCryptPasswordEncoder.matches(password, dbUser.getPassword())) {
                 // throw new ResourceNotFoundException("Username or Password is Wrong!");
-                return new APIResponse(404, "Username or Password is Wrong!");
+                return new APIResponse(400, "Username or Password is Wrong!");
             } else {
 
-                String userRole = "";
+                String userRole;
 
-                if (dbUser.getRoles().contains("ROLE_USER"))
+                if (dbUser.getRoles().stream().allMatch(name -> name.getName().equals("ROLE_USER")))
                     userRole = "U";
                 else
                     userRole = "A";
@@ -192,23 +285,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public APIResponse refreshAccessToken(String refreshToken) {
-        // Refresh Access Token
-        MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
-        multiValueMap.add("grant_type", "refresh_token");
-        multiValueMap.add("refresh_token", refreshToken);
+    public APIResponse refreshAccessToken(String username, String refreshToken) {
+        User dbUser = userRepository.findByUsername(username);
 
-        HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(multiValueMap, setHeaders());
-
-        restTemplate.setErrorHandler(restTemplateResponseErrorHandler);
-
-        ResponseEntity<AccessToken> responseEntity = restTemplate.exchange(
-                URLConfiguration.GET_ACCESS_TOKEN, HttpMethod.POST, httpEntity, AccessToken.class);
-
-        if (responseEntity.getStatusCode() == HttpStatus.OK) {
-            return new APIResponse(200, "New Token!", responseEntity.getBody());
+        if (dbUser == null) {
+            return new APIResponse(400, "Username or Password is Wrong!");
         } else {
-            return new APIResponse(400, "Unsuccessful!");
+            // Refresh Access Token
+            MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
+            multiValueMap.add("grant_type", "refresh_token");
+            multiValueMap.add("refresh_token", refreshToken);
+
+            HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(multiValueMap, setHeaders());
+
+            restTemplate.setErrorHandler(restTemplateResponseErrorHandler);
+
+            ResponseEntity<AccessToken> responseEntity = restTemplate.exchange(
+                    URLConfiguration.GET_ACCESS_TOKEN, HttpMethod.POST, httpEntity, AccessToken.class);
+
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                return new APIResponse(200, "New Token!", responseEntity.getBody());
+            } else {
+                return new APIResponse(400, "Unsuccessful!");
+            }
         }
     }
 
@@ -230,9 +329,19 @@ public class UserServiceImpl implements UserService {
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
                 return new APIResponse(200, "Continue!");
             } else {
-                return refreshAccessToken(refreshToken);
+                return refreshAccessToken(username, refreshToken);
             }
         }
+    }
+
+    @Override
+    public APIResponse forgotPassword(String emailAddress) {
+        return null;
+    }
+
+    @Override
+    public Long countAllUsers() {
+        return userRepository.count();
     }
 
     private HttpHeaders setHeaders() {
@@ -244,5 +353,17 @@ public class UserServiceImpl implements UserService {
         httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         return httpHeaders;
+    }
+
+    private HttpHeaders setAccessTokenHeader(String accessToken) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.set(HttpHeaders.AUTHORIZATION, accessToken);
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+
+        return httpHeaders;
+    }
+
+    private LocalDateTime getCurrentDateTime() {
+        return LocalDateTime.now(TimeZone.getTimeZone("Asia/Kolkata").toZoneId());
     }
 }

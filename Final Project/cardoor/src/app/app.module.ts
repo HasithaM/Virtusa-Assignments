@@ -13,19 +13,21 @@ import {BookingComponent} from './booking/booking.component';
 import {HeaderComponent} from './header/header.component';
 import {FooterComponent} from './footer/footer.component';
 import {AppRoutingModule} from './app-routing.module';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {LogoutComponent} from './logout/logout.component';
 import {PaymentComponent} from './payment/payment.component';
-import {AdmindashboardComponent} from './admin/admindashboard/admindashboard.component';
-import {AdminsidebarComponent} from './admin/adminsidebar/adminsidebar.component';
-import {AdminfooterComponent} from './admin/adminfooter/adminfooter.component';
-import {AdminnavbarComponent} from './admin/adminnavbar/adminnavbar.component';
+import {AdminDashboardComponent} from './admin/admindashboard/admin-dashboard.component';
+import {AdminSidebarComponent} from './admin/adminsidebar/admin-sidebar.component';
+import {AdminFooterComponent} from './admin/adminfooter/admin-footer.component';
+import {AdminNavbarComponent} from './admin/adminnavbar/admin-navbar.component';
 import {ManagecarsComponent} from './admin/managecars/managecars.component';
-import {CarlistComponent} from './admin/carlist/carlist.component';
+import {CarListComponent} from './admin/carlist/car-list.component';
 import {TokenInterceptorService} from './service/token-interceptor.service';
-import { BookingHistoryComponent } from './booking/booking-history/booking-history.component';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {BookingHistoryComponent} from './booking/booking-history/booking-history.component';
+import {AdminBookingsComponent} from './admin/adminbookings/admin-bookings.component';
+import {RefundRequestsComponent} from './admin/refundrequests/refund-requests.component';
+import { UserPaymentsComponent } from './admin/payments/user-payments.component';
 
 @NgModule({
   declarations: [
@@ -42,20 +44,22 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     FooterComponent,
     LogoutComponent,
     PaymentComponent,
-    AdmindashboardComponent,
-    AdminsidebarComponent,
-    AdminfooterComponent,
-    AdminnavbarComponent,
+    AdminDashboardComponent,
+    AdminSidebarComponent,
+    AdminFooterComponent,
+    AdminNavbarComponent,
     ManagecarsComponent,
-    CarlistComponent,
-    BookingHistoryComponent
+    CarListComponent,
+    BookingHistoryComponent,
+    AdminBookingsComponent,
+    RefundRequestsComponent,
+    UserPaymentsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule,
-    NgbModule
+    HttpClientModule
   ],
   providers: [
     {

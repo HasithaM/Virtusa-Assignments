@@ -1,29 +1,23 @@
 package com.hasitha.cardoor.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Data
 public class Payment {
 
-    private Integer paymentID;
-    private Integer bookingID;
-    private Integer customerID;
-    private BigDecimal amount;
-    private Timestamp paymentDate;
-    private String status; // p - payed, r - refunded, c - cancelled
+    private Integer id;
+    private Integer bookingId;
+    private Integer customerId;
+    private BigDecimal payedAmount;
+    private BigDecimal totalRentPrice;
 
-    public Payment() {
-    }
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime paymentDate;
 
-    public Payment(Integer paymentID, Integer bookingID, Integer customerID, BigDecimal amount, Timestamp paymentDate, String status) {
-        this.paymentID = paymentID;
-        this.bookingID = bookingID;
-        this.customerID = customerID;
-        this.amount = amount;
-        this.paymentDate = paymentDate;
-        this.status = status;
-    }
+    private Integer refundRequest; // 1 - need refund, 0 - done refund
+    private String status; // p - payed (full payment), r - refunded, h - half payment
 }

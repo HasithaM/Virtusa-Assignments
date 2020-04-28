@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {Approuter} from '../appconfig/approuter';
+import {Component, OnInit} from '@angular/core';
+import {AppRouter} from '../appconfig/app-router';
 
 @Component({
   selector: 'app-notfound',
@@ -8,12 +8,13 @@ import {Approuter} from '../appconfig/approuter';
 })
 export class NotfoundComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }
 
   public reloadHome() {
-    Approuter.reloadHome();
+    AppRouter.reloadHome();
   }
 }

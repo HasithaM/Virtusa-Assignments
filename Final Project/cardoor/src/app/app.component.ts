@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
   }
 
   public isPaymentWindow() {
-    if (this.router.url === '/payment') {
+    if (this.router.url.indexOf('/payment') > -1) {
       return false;
     } else {
       return true;

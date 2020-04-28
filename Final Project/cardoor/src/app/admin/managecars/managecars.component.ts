@@ -1,14 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {CardoorManagecarsService} from '../../service/cardoor-managecars.service';
-import {isUndefined} from 'util';
 import swal from 'sweetalert';
 import {CardoorTokenService} from '../../service/cardoor-token.service';
 import {CardoorLoginService} from '../../service/cardoor-login.service';
-import {Approuter} from '../../appconfig/approuter';
+import {AppRouter} from '../../appconfig/app-router';
 import {CarModel} from '../../model/car-model';
 import {Car} from '../../model/car';
 import {APIResponse} from '../../model/apiresponse';
-import {NgForm} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {isUndefined} from 'util';
 
 @Component({
   selector: 'app-managecars',
@@ -17,7 +17,8 @@ import {NgForm} from '@angular/forms';
 })
 export class ManagecarsComponent implements OnInit {
 
-  constructor(private cardoorManagecarsService: CardoorManagecarsService,
+  constructor(private activatedRoute: ActivatedRoute,
+              private cardoorManagecarsService: CardoorManagecarsService,
               private cardoorTokenService: CardoorTokenService,
               private cardoorLoginService: CardoorLoginService) {
   }
@@ -31,21 +32,37 @@ export class ManagecarsComponent implements OnInit {
   car: Car = new Car('', '', '', '', '', 0, 0,
     '', 0, '', this.carModel);
 
-  carBrandNames = [/*'Choose...',*/ 'MERCEDES BENZ', 'BMW', 'AUDI', 'TOYOTA', 'NISSAN', 'MAZDA'];
-  carGearTypes = [/*'Choose...',*/ 'MANUAL', 'AUTOMATIC'];
-  carFuelTypes = [/*'Choose...',*/ 'PETROL', 'DIESEL', 'HYBRID'];
+  carBrandNames = ['MERCEDES BENZ', 'BMW', 'AUDI', 'TOYOTA', 'NISSAN', 'MAZDA'];
+  carGearTypes = ['MANUAL', 'AUTOMATIC'];
+  carFuelTypes = ['PETROL', 'DIESEL', 'HYBRID'];
 
   carDisplayBrandName: string;
   carDisplayImage: string;
 
   tokenStatus: boolean;
 
+  method: string;
+  paramCarID: number;
+  carData: any;
+
   ngOnInit(): void {
     this.tokenStatus = false;
+    this.carData = [];
 
     if (!this.cardoorLoginService.isUserAnAdmin()) {
-      Approuter.reloadNotFound();
+      AppRouter.reloadNotFound();
     }
+
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.method = params.method;
+      this.paramCarID = params.id;
+
+      if (!isUndefined(this.method) && this.method !== null) {
+        this.getCarById(this.paramCarID);
+      }
+    }, error => {
+      this.method = 'error';
+    });
   }
 
   public onFileChangedOne(event) {
@@ -64,24 +81,13 @@ export class ManagecarsComponent implements OnInit {
   }
 
   public goToLogout() {
-    Approuter.reloadLogout();
+    AppRouter.reloadLogout();
   }
 
   async addCar() /*: void*/ {
     console.log('Calling Method Check Token: Token Status - ' + this.tokenStatus);
     await this.checkToken();
     console.log('Token Status: ' + this.tokenStatus);
-
-    console.log(this.selectedFileOne);
-
-    const uploadCarData = new FormData();
-    uploadCarData.append('car', JSON.stringify(this.car));
-    uploadCarData.append('imageOne', this.selectedFileOne, this.selectedFileOne.name);
-    uploadCarData.append('imageTwo', this.selectedFileTwo, this.selectedFileTwo.name);
-    uploadCarData.append('imageThree', this.selectedFileThree, this.selectedFileThree.name);
-
-    console.log(this.car);
-    console.log(uploadCarData.get('car'));
 
     console.log('token: ' + localStorage.getItem('accessToken'));
 
@@ -101,6 +107,17 @@ export class ManagecarsComponent implements OnInit {
       && this.selectedFileTwo !== null && !isUndefined(this.selectedFileTwo) && this.selectedFileTwo.size > 0
       && this.selectedFileThree !== null && !isUndefined(this.selectedFileThree) && this.selectedFileThree.size > 0) {
 
+      console.log(this.selectedFileOne);
+
+      const uploadCarData = new FormData();
+      uploadCarData.append('car', JSON.stringify(this.car));
+      uploadCarData.append('imageOne', this.selectedFileOne, this.selectedFileOne.name);
+      uploadCarData.append('imageTwo', this.selectedFileTwo, this.selectedFileTwo.name);
+      uploadCarData.append('imageThree', this.selectedFileThree, this.selectedFileThree.name);
+
+      console.log(this.car);
+      console.log(uploadCarData.get('car'));
+
       if (this.tokenStatus) {
         this.cardoorManagecarsService.addCar(uploadCarData)
           .subscribe(data => {
@@ -111,7 +128,14 @@ export class ManagecarsComponent implements OnInit {
                 title: 'Successful!',
                 text: 'Successfully Created!',
                 icon: 'success'
-              });
+              })
+                .then(result => {
+                  if (result) {
+                    this.reloadCurrentPage();
+                  } else {
+                    this.reloadCurrentPage();
+                  }
+                });
               /*this.car = null;
               this.selectedFileOne = null;
               this.selectedFileTwo = null;
@@ -128,7 +152,14 @@ export class ManagecarsComponent implements OnInit {
                 title: 'Oops!',
                 text: 'Car Already Exists!',
                 icon: 'error'
-              });
+              })
+                .then(result => {
+                  if (result) {
+                    this.reloadCurrentPage();
+                  } else {
+                    this.reloadCurrentPage();
+                  }
+                });
             }
           }, error => {
             console.log(error);
@@ -190,7 +221,7 @@ export class ManagecarsComponent implements OnInit {
           localStorage.setItem('accessToken', this.apiResponse.accessTokens.access_token);
           localStorage.setItem('refreshToken', this.apiResponse.accessTokens.refresh_token);
 
-          console.log('N :' + localStorage.getItem('accessToken'));
+          console.log('N: ' + localStorage.getItem('accessToken'));
 
           this.tokenStatus = true;
         } else if (this.apiResponse.message === 'Unsuccessful!') {
@@ -202,6 +233,27 @@ export class ManagecarsComponent implements OnInit {
         console.log('Error: ' + error);
 
         this.tokenStatus = false;
+      });
+  }
+
+  private getCarById(id: number) {
+    this.cardoorManagecarsService.getCarById(id)
+      .subscribe(data => {
+        console.log(JSON.stringify(data));
+
+        this.carData = data;
+
+        this.car = this.carData;
+        this.carModel.modelName = this.carData.carModel.modelName;
+        this.carModel.modelColor = this.carData.carModel.modelColor;
+
+        this.selectedFileOne = this.carData.carImages.imageOne;
+        this.selectedFileTwo = this.carData.carImages.imageTwo;
+        this.selectedFileThree = this.carData.carImages.imageThree;
+
+        this.displayBrandDetails();
+      }, error => {
+        console.log(JSON.stringify(error));
       });
   }
 
@@ -230,7 +282,114 @@ export class ManagecarsComponent implements OnInit {
     }
   }
 
-  clear(form: NgForm) {
-    form.resetForm();
+  private reloadCurrentPage() {
+    AppRouter.reloadAdminManageCars(0, 'create');
+  }
+
+  public deleteCar() {
+    swal({
+      title: 'Ready?',
+      text: 'Are you sure you want to do this?',
+      icon: 'warning',
+      buttons: ['Oh noez!', 'Aww yiss!'],
+      dangerMode: true,
+    }).then(willDo => {
+      if (willDo) {
+        this.cardoorManagecarsService.deleteCar(this.paramCarID)
+          .subscribe(data => {
+            console.log(JSON.stringify(data));
+
+            // if (data.status === 200) {
+            swal({
+              title: 'Successful!',
+              text: 'Request Successful!',
+              icon: 'success'
+            }).then(okay => {
+              this.reloadCurrentPage();
+            });
+            // } else {
+            // swal({
+            // title: 'Oops!',
+            // text: 'Request Unsuccessful!',
+            // icon: 'error'
+            // });
+            // }
+          }, error => {
+            console.log(JSON.stringify(error));
+
+            swal({
+              title: 'Oops!',
+              text: 'Request Unsuccessful!',
+              icon: 'error'
+            });
+          });
+      } else {
+        swal('Okay', 'You are Safe!');
+      }
+    });
+  }
+
+  public updateCar() {
+    const uploadCarData = new FormData();
+    uploadCarData.append('car', JSON.stringify(this.car));
+
+    if (this.selectedFileOne.name !== null && !isUndefined(this.selectedFileOne.name)) {
+      uploadCarData.append('imageOne', this.selectedFileOne, this.selectedFileOne.name);
+    } else {
+      uploadCarData.append('imageOne', null);
+    }
+
+    if (this.selectedFileTwo.name !== null && !isUndefined(this.selectedFileTwo.name)) {
+      uploadCarData.append('imageTwo', this.selectedFileTwo, this.selectedFileTwo.name);
+    } else {
+      uploadCarData.append('imageTwo', null);
+    }
+
+    if (this.selectedFileThree.name !== null && !isUndefined(this.selectedFileThree.name)) {
+      uploadCarData.append('imageThree', this.selectedFileThree, this.selectedFileThree.name);
+    } else {
+      uploadCarData.append('imageThree', null);
+    }
+
+    swal({
+      title: 'Ready?',
+      text: 'Are you sure you want to do this?',
+      icon: 'warning',
+      buttons: ['Oh noez!', 'Aww yiss!'],
+      dangerMode: true,
+    }).then(willDo => {
+      if (willDo) {
+        this.cardoorManagecarsService.updateCar(uploadCarData)
+          .subscribe(data => {
+            console.log(JSON.stringify(data));
+
+            if (data.status === 200) {
+              swal({
+                title: 'Successful!',
+                text: 'Request Successful!',
+                icon: 'success'
+              }).then(okay => {
+                this.reloadCurrentPage();
+              });
+            } else {
+              swal({
+                title: 'Oops!',
+                text: 'Request Unsuccessful!',
+                icon: 'error'
+              });
+            }
+          }, error => {
+            console.log(JSON.stringify(error));
+
+            swal({
+              title: 'Oops!',
+              text: 'Request Unsuccessful!',
+              icon: 'error'
+            });
+          });
+      } else {
+        swal('Okay', 'You are Safe!');
+      }
+    });
   }
 }

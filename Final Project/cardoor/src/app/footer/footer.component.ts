@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {AppRouter} from '../appconfig/app-router';
 
 @Component({
   selector: 'app-footer',
@@ -14,5 +15,9 @@ export class FooterComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  public reloadHome() {
+    AppRouter.reloadHome();
   }
 }

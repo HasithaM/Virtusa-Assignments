@@ -1,31 +1,30 @@
 package com.hasitha.cardoor.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 public class Booking {
 
-    private Integer bookingID;
-    private Integer carID;
-    private Integer customerID;
+    private Integer id;
+    private Integer carId;
+    private Integer customerId;
     private String pickupLocation;
-    private Timestamp fromDate;
-    private Timestamp toDate;
-    private Timestamp dateBooked;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate fromDate;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate toDate;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime dateBooked;
     private String status; // b - booked, c - cancelled, x - done
 
-    public Booking() {
-    }
+    private Payment payment;
 
-    public Booking(Integer bookingID, Integer carID, Integer customerID, String pickupLocation, Timestamp fromDate, Timestamp toDate, String status) {
-        this.bookingID = bookingID;
-        this.carID = carID;
-        this.customerID = customerID;
-        this.pickupLocation = pickupLocation;
-        this.fromDate = fromDate;
-        this.toDate = toDate;
-        this.status = status;
-    }
+    private Car car;
 }

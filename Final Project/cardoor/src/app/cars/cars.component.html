@@ -7,7 +7,7 @@
         <div class="section-title  text-center">
           <h2>Our Cars</h2>
           <span class="title-line"><i class="fa fa-car"></i></span>
-          <p>All Available {{ brandName === 'all'? '' : brandName }} Cars</p>
+          <p>All Available {{ brandName === 'all' ? '' : brandName }} Cars</p>
         </div>
       </div>
       <!-- Page Title End -->
@@ -26,10 +26,11 @@
           <div class="row">
 
             <!-- Single Car Start -->
-            <div class="col-lg-6 col-md-6"  *ngFor="let car of cars">
+            <div class="col-lg-6 col-md-6" *ngFor="let car of filterDeletedCars()">
               <div class="single-car-wrap">
                 <!-- Add this to the following -> car-thumb-1 -->
-                <div class="car-list-thumb" style="background-image: url({{ 'data:image/jpeg;base64,' + car.carImages.imageOne }});"></div>
+                <div class="car-list-thumb"
+                     style="background-image: url({{ 'data:image/jpeg;base64,' + car.carImages.imageOne }});"></div>
                 <div class="car-list-info without-bar">
                   <h2><a href="#">{{ car.carBrandName + ' ' + car.carModel.modelName }}</a></h2>
                   <h5>{{ 'Rs: ' + car.pricePerHour }}</h5>
@@ -38,16 +39,15 @@
                   <ul class="car-info-list">
                     <li>{{ car.gearType }}</li>
                     <li>{{ car.fuelType }}</li>
-                    <li>{{ car.acNonAc? 'AC' : 'NON AC' }}</li>
+                    <li>{{ car.acNonAc ? 'AC' : 'NON AC' }}</li>
                   </ul>
                   <p class="rating">
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
+                    <span class="badge {{ car.availability === true ? 'badge-success': 'badge-danger' }}">
+                        {{ car.availability === true ? 'Available' : 'Unavailable' }}
+                    </span>
                   </p>
-                  <a routerLink class="rent-btn" (click)="reloadBooking(car.id);">Book It</a>
+                  <a class="rent-btn" (click)="car.availability === true ? reloadBooking(car.id) : carNotAvailable()"
+                     style="cursor: pointer;">Book It</a>
                 </div>
               </div>
             </div>

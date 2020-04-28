@@ -105,7 +105,7 @@
       <div class="col-lg-8">
         <div class="car-details-content">
           <h2>{{ car.carBrandName + ' ' + car.carModel.modelName }}<span
-            class="price">Rent: <b>Rs. {{ car.pricePerHour }}.00</b></span></h2>
+            class="price">Rent Per Hour: <b>Rs. {{ car.pricePerHour }}.00</b></span></h2>
           <div class="car-preview-crousel">
             <div class="single-car-preview">
               <img src="{{ 'data:image/jpeg;base64,' + car.carImages.imageOne }}" alt="JSOFT">
@@ -212,7 +212,9 @@
                         <!--== Pick Up Date ==-->
                         <div class="pick-up-date book-item">
                           <h3>PICK-UP DATE:</h3>
-                          <input id="startDate" [(ngModel)]="this.pickUpDate" name="pickUpDate" (ngModelChange)="calculateAmount(car.pricePerHour, this.pickUpDate, this.returnDate);" placeholder="Pick Up Date"/>
+                          <input type='text' #startDate id="startDate" [(ngModel)]="this.pickUpDate"
+                                 name="pickUpDate"
+                                 placeholder="Pick Up Date"/>
                         </div>
                         <!--== Pick Up Location ==-->
                       </div>
@@ -223,7 +225,9 @@
                         <div class="pick-up-date book-item">
                           <div class="return-car">
                             <h3>Return DATE:</h3>
-                            <input id="endDate" [(ngModel)]="this.returnDate" name="returnDate" (ngModelChange)="calculateAmount(car.pricePerHour, this.pickUpDate, this.returnDate);" placeholder="Return Date"/>
+                            <input type="text" #endDate id="endDate" [(ngModel)]="this.returnDate"
+                                   name="returnDate"
+                                   placeholder="Return Date"/>
                           </div>
                         </div>
                       </div>
@@ -233,11 +237,16 @@
                       <div class="book-a-car">
                         <div class="pick-up-date book-item">
                           <div class="return-car">
-                            <h3>Paying Amount: {{ this.totalDays? 'For' + this.totalDays + 'Days' : '' }}</h3>
-                            <select class="custom-select" [(ngModel)]="this.payingAmount" name="payingAmount">
+                            <h3>Paying Amount: {{ this.totalDays ? 'For ' + this.totalDays + ' Days' : '' }}</h3>
+                            <select class="custom-select" [(ngModel)]="this.payingAmount" name="payingAmount"
+                                    (click)="this.pickUpDate = startDate.value; this.returnDate = endDate.value;
+                                    calculateAmount(car.pricePerHour, this.pickUpDate, this.returnDate);">
                               <option value="Choose" selected>Choose</option>
-                              <option value="{{ this.totalPayment }}">Full Payment - Rs. {{ this.totalPayment }}.00</option>
-                              <option value="{{ this.totalPayment / 2 }}">Half Payment - Rs. {{ this.totalPayment / 2 }}.00</option>
+                              <option value="{{ this.totalPayment }}">Full Payment - Rs. {{ this.totalPayment }}.00
+                              </option>
+                              <option value="{{ this.totalPayment / 2 }}">Half Payment - Rs. {{ this.totalPayment / 2 }}
+                                .00
+                              </option>
                             </select>
                           </div>
                         </div>
@@ -247,7 +256,10 @@
 
 
                   <div class="input-submit">
-                    <button type="submit" (click)="completePayment(car.id, this.pickUpLocation, this.pickUpDate, this.returnDate, this.payingAmount);">Go To Book</button>
+                    <button type="submit"
+                            (click)="completePayment(car.id, this.pickUpLocation, this.pickUpDate, this.returnDate, this.payingAmount, this.totalPayment);">
+                      Go To Book
+                    </button>
                   </div>
                 </form>
               </div>

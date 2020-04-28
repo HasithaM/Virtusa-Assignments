@@ -8,7 +8,9 @@ import java.util.List;
 
 public interface CarRepository extends JpaRepository<Car, Integer> {
 
+    List<Car> findAll();
     List<Car> findByCarBrandName(String carBrandName);
+
     Car findByCarNumber(String carNumber);
 
     @Query("SELECT carBrandName FROM Car")

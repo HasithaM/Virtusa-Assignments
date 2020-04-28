@@ -4,7 +4,7 @@ import swal from 'sweetalert';
 import {isUndefined} from 'util';
 import {User} from '../model/user';
 import {APIResponse} from '../model/apiresponse';
-import {Approuter} from '../appconfig/approuter';
+import {AppRouter} from '../appconfig/app-router';
 
 @Component({
   selector: 'app-register',
@@ -67,9 +67,9 @@ export class RegisterComponent implements OnInit {
             })
               .then(result => {
                 if (result) {
-                  Approuter.reloadLogin();
+                  AppRouter.reloadLogin();
                 } else {
-                  Approuter.reloadHome();
+                  AppRouter.reloadHome();
                 }
               });
           }
@@ -92,14 +92,14 @@ export class RegisterComponent implements OnInit {
   }
 
   public reloadLogin() {
-    Approuter.reloadLogin();
+    AppRouter.reloadLogin();
   }
 
   public reloadAbout() {
-    Approuter.reloadAbout();
+    AppRouter.reloadAbout();
   }
 
   public reloadContact() {
-    Approuter.reloadContact();
+    AppRouter.reloadContact();
   }
 }

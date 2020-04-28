@@ -6,9 +6,11 @@ import com.hasitha.cardoor.repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.TimeZone;
 
 @Service
 public class CarServiceImpl implements CarService {
@@ -40,7 +42,8 @@ public class CarServiceImpl implements CarService {
 
         if (dbCar == null) {
             car.setAvailability(Boolean.TRUE);
-            car.setDateCreated(new Timestamp(System.currentTimeMillis()));
+            car.setDateCreated(getCurrentDateTime());
+            car.setStatus(Boolean.TRUE);
             Car createdCar = carRepository.save(car);
 
             if (createdCar != null)
@@ -54,12 +57,28 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public APIResponse updateCar(Car car) {
-        Car updatedCar = carRepository.findByCarNumber(car.getCarNumber());
+        Car currentCar = carRepository.findByCarNumber(car.getCarNumber());
 
-        if (updatedCar != null) {
-            Car newCar = carRepository.save(updatedCar);
+        if (currentCar != null) {
+            currentCar.setCarBrandName(car.getCarBrandName());
+            currentCar.setCarModel(car.getCarModel());
+            currentCar.setCarImages(car.getCarImages());
+            currentCar.setFuelType(car.getFuelType());
+            currentCar.setGearType(car.getGearType());
+            currentCar.setNoOfPassengers(car.getNoOfPassengers());
+            currentCar.setDoorsCount(car.getDoorsCount());
+            currentCar.setMileagePerGallon(car.getMileagePerGallon());
+            currentCar.setAcNonAc(car.getAcNonAc());
+            currentCar.setBagsCanHold(car.getBagsCanHold());
+            currentCar.setPricePerHour(car.getPricePerHour());
 
-            if (newCar != null) {
+            // car.setAvailability(Boolean.TRUE);
+            // car.setDateCreated(getCurrentDateTime());
+            // car.setStatus(Boolean.TRUE);
+
+            Car updatedCar = carRepository.save(currentCar);
+
+            if (updatedCar != null) {
                 return new APIResponse(200, "Successful!");
             } else {
                 return new APIResponse(404, "Unsuccessful!");
@@ -71,12 +90,48 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public APIResponse deleteCar(Integer carId) {
-        if (carRepository.existsById(carId)) {
-            carRepository.deleteById(carId);
+        Optional<Car> currentCar = carRepository.findById(carId);
+        if (currentCar.isPresent()) {
+            Car car = currentCar.get();
+            car.setStatus(Boolean.FALSE);
+
+            carRepository.save(car);
 
             return new APIResponse(200, "Successful!");
         } else
             return new APIResponse(404, "No Car!");
+    }
+
+    @Override
+    public APIResponse makeCarUnavailable(Integer carId) {
+        Optional<Car> currentCar = findById(carId);
+
+        if (currentCar.isPresent()) {
+            Car car = currentCar.get();
+            car.setAvailability(false);
+
+            carRepository.save(car);
+
+            return new APIResponse(200, "Successful!");
+        } else {
+            return new APIResponse(404, "No Car!");
+        }
+    }
+
+    @Override
+    public APIResponse makeCarAvailable(Integer carId) {
+        Optional<Car> currentCar = findById(carId);
+
+        if (currentCar.isPresent()) {
+            Car car = currentCar.get();
+            car.setAvailability(true);
+
+            carRepository.save(car);
+
+            return new APIResponse(200, "Successful!");
+        } else {
+            return new APIResponse(404, "No Car!");
+        }
     }
 
     @Override
@@ -87,5 +142,9 @@ public class CarServiceImpl implements CarService {
     @Override
     public List<String> getAllCarBrandNames() {
         return carRepository.findAllCarBrandName();
+    }
+
+    private LocalDateTime getCurrentDateTime() {
+        return LocalDateTime.now(TimeZone.getTimeZone("Asia/Kolkata").toZoneId());
     }
 }

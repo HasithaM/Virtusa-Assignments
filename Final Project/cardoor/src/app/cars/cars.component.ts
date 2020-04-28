@@ -4,7 +4,7 @@ import {ActivatedRoute} from '@angular/router';
 import {CardoorTokenService} from '../service/cardoor-token.service';
 import swal from 'sweetalert';
 import {APIResponse} from '../model/apiresponse';
-import {Approuter} from '../appconfig/approuter';
+import {AppRouter} from '../appconfig/app-router';
 
 @Component({
   selector: 'app-cars',
@@ -21,7 +21,8 @@ export class CarsComponent implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute,
               private cardoorManagecarsService: CardoorManagecarsService,
-              private cardoorTokenService: CardoorTokenService) {}
+              private cardoorTokenService: CardoorTokenService) {
+  }
 
   async ngOnInit() /*: void*/ {
     this.tokenStatus = false;
@@ -118,10 +119,22 @@ export class CarsComponent implements OnInit {
   }
 
   public reloadBooking(id) {
-    Approuter.reloadBooking(id);
+    AppRouter.reloadBooking(id);
+  }
+
+  public carNotAvailable() {
+    swal({
+      title: 'Oops!',
+      text: 'Sorry! Car is Not Available!',
+      icon: 'error',
+    });
   }
 
   public goToLogout() {
-    Approuter.reloadLogout();
+    AppRouter.reloadLogout();
+  }
+
+  public filterDeletedCars() {
+    return this.cars.filter(x => x.status === true);
   }
 }
